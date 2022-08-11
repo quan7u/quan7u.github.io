@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Hystrix 官方文档学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hystrix 笔记">
+<meta property="og:url" content="https://quan7u.github.io/note-of-hystrix">
+<meta property="og:site_name" content="quan7u">
+<meta property="og:description" content="Hystrix 官方文档学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%201.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%202.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%203.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%204.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%205.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%206.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%207.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%208.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%209.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-hystrix/Untitled%2010.png">
+<meta property="article:published_time" content="2021-08-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-11T01:52:49.001Z">
+<meta property="article:tag" content="Hystrix">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://quan7u.github.io/note-of-hystrix/Untitled.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Hystrix 笔记 - quan7u</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"quan7u.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 30vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>quan7u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Hystrix 笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-08-06 00:00" pubdate>
+          2021年8月6日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          64 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Hystrix 笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>💡 为了解决分布式系统的延迟和容错。</p>
+<h1 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h1><p>最新及最稳定的版本定格在了 <code>v1.5.18</code> ，Hystrix 团队把研发重点从预先配置，转移到对应用程序的实时性能做出反应的自适应实现上。官方在已存在的项目里继续使用 Hystrix，在新的内部项目中已经切换到一些更开放及活跃的组件，比如 <a target="_blank" rel="noopener" href="https://github.com/resilience4j/resilience4j">resilience4j</a>。</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Hystrix 是一个延迟和容错库，旨在隔离远程系统、服务及第三方库的访问点，停止级联故障，并在复杂的分布式系统不可避免的故障中实现弹性。</p>
+<h2 id="Hystrix-能做什么？"><a href="#Hystrix-能做什么？" class="headerlink" title="Hystrix 能做什么？"></a>Hystrix 能做什么？</h2><p>Hystrix 被设计用于：</p>
+<ul>
+<li>为通过第三方客户端访问依赖组件（通常是通过网络）带来的延迟和故障提供保护和控制。</li>
+<li>中断停止复杂分布式系统中的级联故障。</li>
+<li>快速失败和快速恢复。</li>
+<li>在可能的情况下，降级和优雅回退。</li>
+<li>启用接近实时的监控，告警和操作控制。</li>
+</ul>
+<h2 id="Hystrix-解决什么？"><a href="#Hystrix-解决什么？" class="headerlink" title="Hystrix 解决什么？"></a>Hystrix 解决什么？</h2><p>在复杂的分布式架构中应用程序有许多依赖项，每个依赖都有不可避免地出错失败的时刻。如果应用程序没有和外部故障隔离开来，就存在一起宕机的风险。</p>
+<p>举个例子，一个应用依赖 30 个服务，每个服务正常运行时间为 99%，那么：</p>
+<blockquote>
+<p>99.9930 &#x3D; 99.7% uptime<br>0.3% of 1 billion requests &#x3D; 3,000,000 failures<br>2+ hours downtime&#x2F;month even if all dependencies have excellent uptime.<br>这样算下来，即使所有依赖都有优秀的正常运行时间，每个月也会有 2 个多小时的服务不可用</p>
+</blockquote>
+<p>现实情况往往更差。</p>
+<p>即使所有依赖组件都运行良好，但如果不设计好整个系统的弹性，那么数十个服务中每一个服务即使只有 0.01% 的宕机时间，累计影响也相当于一个月潜在的数小时的不可用。</p>
+<hr>
+<p>当一切正常时，请求流如下：</p>
+<p><img src="/note-of-hystrix/Untitled.png" srcset="/img/loading.gif" lazyload></p>
+<p>当众多后端系统地其中之一发生延迟，它会阻塞整个用户请求：</p>
+<p><img src="/note-of-hystrix/Untitled%201.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%201.png"></p>
+<p>对于高流量系统，单个后端依赖的延迟可能会导致所有服务器上的所有资源在几秒钟之内达到饱和。</p>
+<p>应用通过网络或者进入客户端库的每个点，都可能影响到网络请求，这都是潜在故障的来源。</p>
+<p>比故障更可怕的是，备份队列、线程和其它系统资源等等，都可能增加服务之间的延迟，从而造成更多的级联故障。</p>
+<p><img src="/note-of-hystrix/Untitled%202.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%202.png"></p>
+<p>当通过第三方客户端执行网络请求时，这些问题会更严重，第三方客户端库是一个”黑盒“，实现细节隐藏在内部，且随时可能会变化，而且每个客户端库的网络或资源配置都不相同，通常很难监控和更改。</p>
+<p>更糟糕的是存在依赖的传递影响，执行的网络调用通常很消耗资源且容易出错，但应用程序没有显式调用。</p>
+<p>网络连接会失败或者降级。服务和服务器会宕机或变慢。新的库或服务部署会改变程序行为或性能。客户端库可能存在 bug。</p>
+<p>所有的这些故障和延迟都需要去隔离和管理，以便单个故障依赖项不会拖垮整个应用或系统。</p>
+<h2 id="Hystrix-有哪些设计原则？"><a href="#Hystrix-有哪些设计原则？" class="headerlink" title="Hystrix 有哪些设计原则？"></a>Hystrix 有哪些设计原则？</h2><ul>
+<li>防止单个依赖项耗尽所有容器（如 Tomcat）的用户线程。</li>
+<li>减少负载、快速失败，而不是使用队列处理。</li>
+<li>情况允许下提供备用方案以保证用户不受故障的影响。</li>
+<li>通过隔离技术（such as bulkhead, swimlane, and circuit breaker patterns）限制任意一个依赖项的影响。</li>
+<li>通过结局实时的统计、监控和告警优化错误发现时间 （time-to-discovery）</li>
+<li>在大部分情况下，Hystrix 借助于配置更改的低延迟传播和对属性动态变更来优化错误恢复时间 （time-to-recovery），好处在于能够使用低延迟反馈循环进行实时操作变更。</li>
+<li>保护依赖客户端的整个执行链路不会失败，而不仅仅是网络流量。</li>
+</ul>
+<h2 id="Hystrix-是如何实现它的目标的？"><a href="#Hystrix-是如何实现它的目标的？" class="headerlink" title="Hystrix 是如何实现它的目标的？"></a>Hystrix 是如何实现它的目标的？</h2><ul>
+<li>将对外部系统（或依赖）的所有调用包装在 HystrixCommand 或 HystrixObservableCommand 对象，这些对象通常在单独的线程中执行。（命令模式）</li>
+<li>超时调用花费的时间超过定义的阈值。有一个默认值，但对于大多数依赖项，您可以通过属性来自定义设置这些超时，以便于略高于每个依赖项所测量的 99.5% 的性能。</li>
+<li>为每个依赖项都维护了一个小的线程池（或信号量）；如果它满了，指向该依赖的请求将立即被拒绝，而不会入队等待。</li>
+<li>衡量成功，失败（由客户端抛出异常），超时和线程拒绝。</li>
+<li>当服务的错误率百分比超过阈值，会在一定时间内手动或自动触发断路器，停止对特定服务的所有请求。</li>
+<li>当请求失败、被拒绝、超时或者短路时，会执行回退逻辑。</li>
+<li>近实时地监控指标和配置变更。</li>
+</ul>
+<p>当使用 Hystrix 包装每个基础依赖，上面图标的服务架构体系会变成下图。每个依赖项相互隔离，在资源有限的情况下，发生延迟服务会变得饱和，覆盖在依赖项何种类型故障响应何种回退的逻辑。</p>
+<p><img src="/note-of-hystrix/Untitled%203.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%203.png"></p>
+<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p>下图展示了当借助于 Hystrix 向服务依赖项发起请求的过程：</p>
+<p><img src="/note-of-hystrix/Untitled%204.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%204.png"></p>
+<p>下面展开解释更详细的细节</p>
+<h3 id="1、构造一个-HystrixCommand-或-HystrixObservableCommand-对象"><a href="#1、构造一个-HystrixCommand-或-HystrixObservableCommand-对象" class="headerlink" title="1、构造一个 HystrixCommand 或 HystrixObservableCommand 对象"></a>1、构造一个 <code>HystrixCommand</code> 或 <code>HystrixObservableCommand</code> 对象</h3><p>第一步，构造一个 <code>HystrixCommand</code> 或 <code>HystrixObservableCommand</code> 对象来表示发送给依赖组件的请求。向构造函数传递请求时需要的任何参数。</p>
+<p>如果期望返回一个单一的响应，构造一个 <code>HystrixCommand</code> 对象。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">HystrixCommand</span> <span class="hljs-variable">command</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HystrixCommand</span>(arg1, arg2);<br></code></pre></td></tr></table></figure>
+
+<p>如果期望返回一个触发响应的可观察者，构造一个 <code>HystrixObservableCommand</code> 对象。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">HystrixObservableCommand</span> <span class="hljs-variable">command</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HystrixObservableCommand</span>(arg1, arg2);<br></code></pre></td></tr></table></figure>
+
+<h3 id="2、执行-Command"><a href="#2、执行-Command" class="headerlink" title="2、执行 Command"></a>2、执行 Command</h3><p>共有四个方法去执行 Command（前两个只对 <code>HystrixCommand</code> 有效）：</p>
+<ul>
+<li><code>execute()</code> - 阻塞的，返回从依赖组件接收到的单个响应（或在出错时抛异常）</li>
+<li><code>queue()</code> - 返回一个 <code>Future</code> ，可以用它从依赖组件获得单一响应</li>
+<li><code>observe()</code> - 订阅表示响应的 <code>Observable</code> ，返回源 <code>Observable</code> 的复制。</li>
+<li><code>toObservable()</code> - 返回一个 <code>Observable</code> ，当订阅它时，会执行 Hystrix command 并触发响应</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">K</span>             <span class="hljs-variable">value</span>   <span class="hljs-operator">=</span> command.execute();<br>Future&lt;K&gt;     fValue  = command.queue();<br>Observable&lt;K&gt; ohValue = command.observe();         <span class="hljs-comment">//hot observable</span><br>Observable&lt;K&gt; ocValue = command.toObservable();    <span class="hljs-comment">//cold observable</span><br></code></pre></td></tr></table></figure>
+
+<p>同步方法 <code>execute()</code> 实则调用 <code>queue().get()</code> 。</p>
+<p>而 <code>queue()</code> 则是调用 <code>toObeservable().toBlocking().toFuture()</code> 。</p>
+<p>也就是说，包括返回单个简单值的方法，所有 <code>HystrixCommand</code> 都由 <code>Observable</code> 实现支持的。 </p>
+<h3 id="3、响应是否被缓存？"><a href="#3、响应是否被缓存？" class="headerlink" title="3、响应是否被缓存？"></a>3、响应是否被缓存？</h3><p>如果 command 对象开启了请求缓存，并且该请求的响应在缓存中仍有效，缓存的响应则会立刻返回到 Observable 的表单中。</p>
+<h3 id="4、断路器是否开启？"><a href="#4、断路器是否开启？" class="headerlink" title="4、断路器是否开启？"></a>4、断路器是否开启？</h3><p>当 command 被执行，Hystrix 会检查断路器是否打开状态。</p>
+<p>如果“电路”是打开状态（或称为”跳闸“），Hystrix 将不会执行 command，并将流程路由到（8）执行回退（降级）。</p>
+<p>如果”电路“是关闭状态的，流程会继续推进到（5），查看是否有可用的容量去执行 command。</p>
+<h3 id="5、Thread-Pool-x2F-Queue-x2F-Semaphore-满了吗？"><a href="#5、Thread-Pool-x2F-Queue-x2F-Semaphore-满了吗？" class="headerlink" title="5、Thread Pool&#x2F;Queue&#x2F;Semaphore 满了吗？"></a>5、Thread Pool&#x2F;Queue&#x2F;Semaphore 满了吗？</h3><p>如果与 command 关联的 thread-pool 和 queue（或是 semaphore，不在 thread 运行时）满了，那么 Hystrix 将不会执行 command 并且立即将流程路由到（8）执行回退（降级）。</p>
+<h3 id="6、HystrixObservableCommand-construct-or-HystrixCommand-run"><a href="#6、HystrixObservableCommand-construct-or-HystrixCommand-run" class="headerlink" title="6、HystrixObservableCommand.construct() or HystrixCommand.run()"></a>6、<code>HystrixObservableCommand.construct()</code> or <code>HystrixCommand.run()</code></h3><p>在这里，Hystrix 通过为此目的编写的方法调用对依赖项的请求，方法如下：</p>
+<ul>
+<li><code>HystrixCommand.run()</code> - 返回一个单一响应或抛出一个异常</li>
+<li><code>HystrixObservableCommand.construct()</code> — 返回一个能够触发响应的 Observable 或发送一个 <code>onError</code> 通知</li>
+</ul>
+<p>如果 <code>run()</code> 或 <code>construct()</code> 方法超出 command 的超时时间，线程将会抛出一个 <code>TimeoutException</code> （或者在单独的计时器线程抛出异常，如果 command 不在自己的 thread 中运行）。这种情况下，Hystrix 将路由到降级（8），如果方法没有被取消或中断，将丢弃 <code>run()</code> 或 <code>construct()</code> 的最终返回值。</p>
+<p>Hystrix 在 JVM 能够做到最好的就是抛出一个 <code>InterrupedException()</code>，但请注意，这并不能强行让潜在的线程停止工作。如果 Hystrix 包装的任务线程没有遵循中断异常，那么尽管客户端以及收到一个 <code>TimeoutException</code>， Hystrix 线程池的线程仍将继续它的工作。这种行为可能会使 Hystrix 线程池饱和，尽管负载被”正确地释放“。大多数 Java HTTP 客户端库都不遵循中断异常。所以确保在 HTTP 客户端上正确配置连接和读写的超时时间。</p>
+<p>如果 command 没有抛出任何异常，并且返回了一个响应，那么 Hystrix 将在执行一些日志记录和度量报告后返回该响应。<code>run()</code> 方法，Hystrix 会返回一个 Observable 单一的响应，然后触发 <code>onCompleted()</code> 通知；而 <code>construct()</code> 同样返回一个相同的 Observable 对象。</p>
+<h3 id="7、计算执行链路的健康"><a href="#7、计算执行链路的健康" class="headerlink" title="7、计算执行链路的健康"></a>7、计算执行链路的健康</h3><p>Hystrix 向熔断器报告成功，失败，请求被拒绝和请求超时，维护了一组用于计算统计信息的滚动的计数器。</p>
+<p>它使用这些统计数据来确定”电路“什么时候”跳闸“，将短路所有后续的请求，直到恢复周期结束。结束后，它将在首次检查一定的健康检查项后再次关闭（熔断结束，重新连通）“电路”。</p>
+<h3 id="8、降级方案"><a href="#8、降级方案" class="headerlink" title="8、降级方案"></a>8、降级方案</h3><p>每当 command 执行失败时，Hystrix 尝试恢复到降级计划：</p>
+<ul>
+<li>当 <code>construct()</code> 或 <code>run()</code>  抛出异常（6）</li>
+<li>当 command 因链路断开而短路时（4）</li>
+<li>当 command 的线程池和队列或信号量容量已满时（5）</li>
+<li>当 command 执行超时</li>
+</ul>
+<p>你可以编写自己的降级方案用于提供通用的响应，来自内存缓存或者通过静态逻辑，从而不需要依赖网络。如果想在降级方案中使用到网络调用，应该通过另一个 <code>HystrixCommand</code> 或 <code>HystrixObservableCommand</code> 来实现。</p>
+<p><code>HystrixCommand</code>  - 实现 <code>HystrixCommand.getFallback()</code> </p>
+<p><code>HystrixObservableCommand</code>  - 实现 <code>HystrixObservableCommand.resumeWithFallback()</code></p>
+<p>上述两个方法会返回 Observable 对象。</p>
+<p>如果你没有实现降级方法，或者降级方法本身抛出异常，Hystrix 仍然会返回 Observable 对象，但该对象不会携带任何信息并且会立即以 <code>onError</code> 通知终止。正是通过这个 <code>onError</code> 通知，导致命令失败的异常得以传回给调用者。（实现一个可能会异常的降级方法是很糟糕的实践。你应该实现的降级，不应该执行任何可能失败的逻辑。）</p>
+<p>降级失败或不存在降级策略的最终结果将根据调用 Hystrix command 的方式而各不相同：</p>
+<ul>
+<li><code>execute()</code> - 抛出异常</li>
+<li><code>queue()</code> - 能够正常返回一个 Future 对象，但是如果调用其 <code>get()</code> 方法，将会抛异常</li>
+<li><code>observe()</code> - 返回一个 <code>Observable</code> 对象，当订阅该对象时，它会通过调用订阅者的 <code>onError</code> 方法立即终止</li>
+<li><code>toObservable()</code> - 返回一个 <code>Observable</code> 对象，当订阅该对象时，它会通过调用订阅者的 <code>onError</code> 方法终止</li>
+</ul>
+<h3 id="9、返回成功的响应"><a href="#9、返回成功的响应" class="headerlink" title="9、返回成功的响应"></a>9、返回成功的响应</h3><ul>
+<li><code>execute()</code> — obtains a <code>Future</code> in the same manner as does <code>.queue()</code> and then calls <code>get()</code> on this <code>Future</code> to obtain the single value emitted by the <code>Observable</code></li>
+<li><code>queue()</code> — 把 <code>Observable</code> 放到 <code>BlockingObservable</code> 以便于能够将其转换成 <code>Future</code>, 然后返回这个 <code>Future</code></li>
+<li><code>observe()</code> — subscribes to the <code>Observable</code> immediately and begins the flow that executes the command; returns an <code>Observable</code> that, when you <code>subscribe</code> to it, replays the emissions and notifications</li>
+<li><code>toObservable()</code> — returns the <code>Observable</code> unchanged; you must <code>subscribe</code> to it in order to actually begin the flow that leads to the execution of the command</li>
+</ul>
+<h2 id="熔断器"><a href="#熔断器" class="headerlink" title="熔断器"></a>熔断器</h2><p>下图展示了 <code>Hystrix</code> 或 <code>HystrixObservableCommand</code> 与 <code>HystrixCircuitBreaker</code> 的交互逻辑以及决策判定，包括计数器的行为。</p>
+<p><img src="/note-of-hystrix/Untitled%205.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%205.png"></p>
+<p>电路的开合准确的区分方法如下：</p>
+<ol>
+<li><p>假设通过电路的电量满足一定的阈值</p>
+<p> <code>HystrixCommandProperties.circuitBreakerRequestVolumeThreshold()</code></p>
+</li>
+<li><p>假设错误率超过错误率的阈值</p>
+<p> <code>HystrixCommandProperties.circuitBreakerErrorThresholdPercentage()</code></p>
+</li>
+<li><p>熔断器从 <code>CLOSED</code> 转换成 <code>OPEN</code> </p>
+</li>
+<li><p>一段时间之后，下一个请求被允许通过（当前为 <code>HALF-OPEN</code> 状态）。如果请求失败，熔断器在休眠窗口期间返回 <code>OPEN</code> 状态。如果请求成功，熔断器转换为 <code>CLOSED</code> 状态，回到第 <strong>1</strong> 步。如此反复。</p>
+</li>
+</ol>
+<h2 id="隔离"><a href="#隔离" class="headerlink" title="隔离"></a>隔离</h2><p>Hystrix 使用隔板模式来隔离组件彼此之间的依赖关系，并限制对任一组件的并发访问。</p>
+<p><img src="/note-of-hystrix/Untitled%206.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%206.png"></p>
+<h2 id="线程-amp-线程池"><a href="#线程-amp-线程池" class="headerlink" title="线程 &amp; 线程池"></a>线程 &amp; 线程池</h2><p>客户端（库，网络调用等）在运行在单独的线程中。这将它们与调用线程（Tomcat 线程池）隔离开，以便调用方能够“离开”耗时长的依赖项调用。</p>
+<p>Hystrix 使用独立的线程池来约束给定的依赖项，所以底层执行的延迟只会让线程池的可用线程饱和。</p>
+<p><img src="/note-of-hystrix/Untitled%207.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%207.png"></p>
+<p>你也可以在不使用线程池的情况下避免失败，但这要求受信任的客户端必须非常迅速地失败（网络连接&#x2F;读超时和重试配置）且总是运转地很好。</p>
+<p>Netflix 在 Hystrix 的设计中，出于许多原因选择使用线程和线程池来实现隔离，如下：</p>
+<ul>
+<li>许多应用程序执行若干（有时超过 100）的由不同开发团队开发的后端服务</li>
+<li>每个服务都提供其自己的客户端库</li>
+<li>客户端库一直在变化</li>
+<li>客户端库逻辑可能增加新的网络调用</li>
+<li>客户端库可能包含重试，数据解析，缓存（内存或网络）等逻辑，以及其它类似行为</li>
+<li>客户端库像个”黑盒“——屏蔽实现</li>
+<li>在几个现实的生产中断案例中检测出”噢，有些东西改变了，属性应该被调整“或”客户端库改变了它的行为“</li>
+<li>即使客户端本身没有变化，服务本身也会发生变化，会影响到性能，从而导致客户端配置无效</li>
+<li>传递依赖关系可能引入其它的客户端库，这些库可能不是预期的，也可能没有正确地配置</li>
+<li>大多数网络访问都是同步执行的</li>
+<li>故障和延迟也由可能发生在客户端代码中，而不仅仅是网络调用</li>
+</ul>
+<p><img src="/note-of-hystrix/Untitled%208.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%208.png"></p>
+<h3 id="线程池的优势"><a href="#线程池的优势" class="headerlink" title="线程池的优势"></a>线程池的优势</h3><p>通过依赖项各自线程池的线程实现隔离的优势有：</p>
+<ul>
+<li>应用程序完全不受失控客户端库的影响。给定依赖项的线程池饱和，也不会影响应用程序的其余部分。</li>
+<li>应用接入新的客户端库会少很多风险。如果有问题，隔离了该客户端库也不会影响到其它部分。</li>
+<li>当故障的客户端重新恢复正常时，线程池将被清除，应用程序立即恢复正常的性能，而不是在整个 Tomcat 容器过载时进行长时间恢复。</li>
+<li>如果客户端库配置有误，通过线程池的运行状况能很快地推断证明出来（通过增加地错误，延迟，超时，拒绝等等）且可以再不影响应用功能地情况下处理它（通常通过动态属性实时处理）。</li>
+<li>如果客户端服务改变性能特征（通常会出现问题），又需要进行调优（增加&#x2F;减少超时时间，重试等等），而这可以通过线程池的指标进行可视化监控（错误，延迟，超时，拒绝），能够在不影响其他客户端，请求或用户的情况下处理。</li>
+<li>除了隔离的好处之外，专用线程池还能提供了内置的并发性，可以利用它在同步客户端库之上构建异步接口 facade（类似于 Netflix API 如何在 Hystrix command 上构建响应式、完全异步的Java API）</li>
+</ul>
+<p>简而言之，线程池提供的隔离允许优雅地处理不断变化的客户端库和子系统性能特征的动态组合，而不会导致宕机。</p>
+<p><strong>注意</strong>：尽管单独的线程提供了隔离，但你的底层客户端库也应该有超时和&#x2F;或响应线程中断，保证它不会无限期地阻塞，导致 Hystrix 线程池饱和。</p>
+<h3 id="线程池的缺点"><a href="#线程池的缺点" class="headerlink" title="线程池的缺点"></a>线程池的缺点</h3><p>最主要的缺点就是增加了计算的开销。每个 command 执行都在单独的线程运行，其中涉及队列、调度和上下文切换。</p>
+<p>Netflix 在设计这一系统时，认为开销足够小，不会对成本或性能产生重大影响。决定接受这种开销的成本，以换取它提供的好处。</p>
+<h3 id="线程开销"><a href="#线程开销" class="headerlink" title="线程开销"></a>线程开销</h3><h3 id="Semaphores"><a href="#Semaphores" class="headerlink" title="Semaphores"></a>Semaphores</h3><p>你也可以使用信号量（或计数器）来限制任何指定依赖的并发调用次数，而不使用线程池&#x2F;队列。这可以让 Hystrix 在不使用线程池的情况下卸载负载，但不允许超时和推出。如果你信任客户端并且希望减轻负载，那么可以使用这种方法。</p>
+<p><code>HystrixCommand</code> 和 <code>HystrixObservableCommand</code> 在 2 点支持信号量：</p>
+<ul>
+<li><strong>Fallback</strong>：Hystrix 通常在 Tomcat 调用线程上恢复降级。</li>
+<li><strong>Execution</strong>：如果你设置 <code>execution.isolation.strategy</code> 属性为 <code>SEMAPHORE</code> ，Hystrix 会使用 semaphores 去限制调用 command 的并发线程数。</li>
+</ul>
+<h2 id="请求折叠（合并）"><a href="#请求折叠（合并）" class="headerlink" title="请求折叠（合并）"></a>请求折叠（合并）</h2><p>下图展示了两种情况下的线程数和网络连接数：第一种没用折叠请求，第二种用了（假设所有连接都是在短时间内并发的，在本例中是 10ms）。</p>
+<p><img src="/note-of-hystrix/Untitled%209.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%209.png"></p>
+<h3 id="为什么需要请求折叠？"><a href="#为什么需要请求折叠？" class="headerlink" title="为什么需要请求折叠？"></a>为什么需要请求折叠？</h3><p><strong>全局上下文（跨越所有 Tomcat 线程）</strong></p>
+<p>全局的应用级别是最理想的，能够将任意 Tomcat 线程上的任意用户请求合并到一起。</p>
+<p><strong>用户请求上下文（单一的 Tomcat 线程）</strong></p>
+<h2 id="请求缓存"><a href="#请求缓存" class="headerlink" title="请求缓存"></a>请求缓存</h2><p><img src="/note-of-hystrix/Untitled%2010.png" srcset="/img/loading.gif" lazyload alt="note-of-hystrix%20a1c5e73fea364ddba2bc6e82f0e02e2d/Untitled%2010.png"></p>
+<p>请求缓存的好处：</p>
+<p>- </p>
+<h1 id="Fallback"><a href="#Fallback" class="headerlink" title="Fallback"></a>Fallback</h1><p>对于大多数操作都希望有降级策略，但总有几个例外：</p>
+<ol>
+<li><p>执行写操作的命令</p>
+<p> 如果写入失败，更可能希望将失败返回给调用方。</p>
+</li>
+<li><p>批量的系统&#x2F;离线计算</p>
+<p> 当填充缓存、生成报告或是任何形式的离线计算，更合适的做法通常是将错误返回给调用方，以便稍后重试，而不是发送一个静默的降级响应。</p>
+</li>
+</ol>
+<h1 id="Error-Propagation"><a href="#Error-Propagation" class="headerlink" title="Error Propagation"></a>Error Propagation</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Hystrix/" class="category-chain-item">Hystrix</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Hystrix/">#Hystrix</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Hystrix 笔记</div>
+      <div>https://quan7u.github.io/note-of-hystrix</div>
+    </div>
+    <div class="license-meta">
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年8月6日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Spring%20IoC%20&amp;%20Beans/" title="Spring IoC &amp; Beans">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spring IoC &amp; Beans</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/note-of-websocket" title="WebSocket笔记">
+                        <span class="hidden-mobile">WebSocket笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'quan7u/quan7u.github.io');
+      s.setAttribute('issue-term', 'url');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

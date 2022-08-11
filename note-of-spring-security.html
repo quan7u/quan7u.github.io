@@ -1,0 +1,938 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring Security 官方文档学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security 笔记">
+<meta property="og:url" content="https://quan7u.github.io/note-of-spring-security">
+<meta property="og:site_name" content="quan7u">
+<meta property="og:description" content="Spring Security 官方文档学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%201.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%202.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%203.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%204.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%205.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%206.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%207.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%208.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%209.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%2010.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%2011.png">
+<meta property="og:image" content="https://quan7u.github.io/note-of-spring-security/Untitled%2012.png">
+<meta property="article:published_time" content="2020-10-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-11T01:52:46.533Z">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://quan7u.github.io/note-of-spring-security/Untitled.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Spring Security 笔记 - quan7u</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"quan7u.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 30vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>quan7u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spring Security 笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-14 00:00" pubdate>
+          2020年10月14日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          101 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Spring Security 笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="docs-spring-io-x2F-spring-security"><a href="#docs-spring-io-x2F-spring-security" class="headerlink" title="docs.spring.io&#x2F;spring-security"></a>docs.spring.io&#x2F;spring-security</h1><p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authentication-mechanisms">Spring Security Reference</a></p>
+<h1 id="9-Servlet-Security：The-Big-Picture"><a href="#9-Servlet-Security：The-Big-Picture" class="headerlink" title="9. Servlet Security：The Big Picture"></a>9. Servlet Security：The Big Picture</h1><h2 id="9-1-A-Review-of-Filter-s"><a href="#9-1-A-Review-of-Filter-s" class="headerlink" title="9.1. A Review of Filter s"></a>9.1. A Review of <code>Filter</code> s</h2><p><img src="/note-of-spring-security/Untitled.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled.png"></p>
+<h2 id="9-2-DelegatingFilterProxy"><a href="#9-2-DelegatingFilterProxy" class="headerlink" title="9.2. DelegatingFilterProxy"></a>9.2. DelegatingFilterProxy</h2><p>Spring 提供了一个名为 <code>DelegatingFilterProxy</code> 的 <code>Filter</code> 实现，它允许在 Servlet 容器的生命周期和 Spring 的 <code>ApplicationContext</code> 之间建立桥接。</p>
+<p><img src="/note-of-spring-security/Untitled%201.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%201.png"></p>
+<p><code>DelegatingFilterProxy</code> 从 <code>ApplicationContext</code> 查找 Bean Filter0，然后调用Bean Filter0。</p>
+<p><strong>DelegatingFilterProxy 伪代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> &#123;<br>    <span class="hljs-comment">// Lazily get Filter that was registered as a Spring Bean</span><br>    <span class="hljs-comment">// For the example in DelegatingFilterProxy delegate is an instance of Bean Filter0</span><br>    <span class="hljs-type">Filter</span> <span class="hljs-variable">delegate</span> <span class="hljs-operator">=</span> getFilterBean(someBeanName);<br>    <span class="hljs-comment">// delegate work to the Spring Bean</span><br>    delegate.doFilter(request, response);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>DelegatingFilterProxy</code> 的另外一个好处是可以延迟查找 <code>Filter</code> Bean 实例。这很重要，因为容器需要在启动之前注册 <code>Filter</code> 实例。但是，Spring通常使用 <code>ContextLoaderListener</code> 来加载Spring Beans，这在需要注册的 <code>Filter</code> 实例注册之前是不会完成的。</p>
+<h2 id="9-3-FilterChainProxy"><a href="#9-3-FilterChainProxy" class="headerlink" title="9.3. FilterChainProxy"></a>9.3. FilterChainProxy</h2><p>Spring Security 的 Servlet 支持包含在 <code>FilterChainProxy</code> 中。<code>FilterChainProxy</code> 是 Spring Security 提供的一个特殊的 <code>Filter</code> ，允许通过  <code>SecurityFilterChain</code> 代理给多个 Filter 实例工作。它通常被封装在 DelegatingFilterProxy 中。</p>
+<p><img src="/note-of-spring-security/Untitled%202.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%202.png"></p>
+<h2 id="9-4-SecurityFilterChain"><a href="#9-4-SecurityFilterChain" class="headerlink" title="9.4. SecurityFilterChain"></a>9.4. SecurityFilterChain</h2><p><code>SecurityFilterChain</code> 被 FilterChainProxy 用来确定本次请求应该调用哪些 Spring Security的 <code>Filter</code> s。</p>
+<p><img src="/note-of-spring-security/Untitled%203.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%203.png"></p>
+<p><img src="/note-of-spring-security/Untitled%204.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%204.png"></p>
+<h2 id="9-5-Security-Filters-过滤器"><a href="#9-5-Security-Filters-过滤器" class="headerlink" title="9.5. Security Filters 过滤器"></a>9.5. Security Filters 过滤器</h2><p>有时候知道 Security Filters 顺序是非常有用的。</p>
+<ul>
+<li>Spring Security Filter 的排序<ul>
+<li><p>ChannelProcessingFilter</p>
+</li>
+<li><p>ConcurrentSessionFilter</p>
+</li>
+<li><p>WebAsyncManagerIntegrationFilter</p>
+  <aside>
+  💡 为后续的异步调用准备 WebAsyncManager
+  
+  </aside>
+  </li>
+<li><p>SecurityContextPersistenceFilter</p>
+  <aside>
+  💡 请求来临时，创建一个 SecurityContextHolder，本质上是 ThreadLocal；
+  请求处理完成时，清除 SecurityContextHolder。
+  解决在请求当前线程中的用户信息获取。
+  
+  </aside>
+  </li>
+<li><p>HeaderWriterFilter</p>
+  <aside>
+  💡 添加某些 header 启用浏览器保护的场景很有用。
+  比如X-Frame-Options, X-XSS-Protection和X-Content-Type-Options。
+  
+  </aside>
+  </li>
+<li><p>CorsFilter</p>
+  <aside>
+  💡 跨域处理，有默认实现。
+  
+  </aside>
+  </li>
+<li><p>CsrfFilter</p>
+  <aside>
+  💡 csrf token 相关
+  
+  </aside>
+  </li>
+<li><p>LogoutFilter 登出过滤器</p>
+<p>  <img src="/note-of-spring-security/Untitled%205.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%205.png"></p>
+<p>  默认情况下匹配 <code>/logout</code> ，2 个 LogoutHandler</p>
+<ol>
+<li>SecurityContextLogoutHandler<ul>
+<li>invalidateHttpSession &#x2F;&#x2F; 清除 Session</li>
+<li>clearAuthentication &#x2F;&#x2F; 清除认证</li>
+</ul>
+</li>
+<li>LogoutSuccessEventPublishingLogoutHandler 事件通知</li>
+</ol>
+</li>
+<li><p>OAuth2AuthorizationRequestRedirectFilter</p>
+</li>
+<li><p>Saml2WebSsoAuthenticationRequestFilter</p>
+</li>
+<li><p>X509AuthenticationFilter</p>
+</li>
+<li><p>AbstractPreAuthenticatedProcessingFilter</p>
+</li>
+<li><p>CasAuthenticationFilter</p>
+</li>
+<li><p>OAuth2LoginAuthenticationFilter</p>
+</li>
+<li><p>Saml2WebSsoAuthenticationFilter</p>
+</li>
+<li><p><code>[UsernamePasswordAuthenticationFilter](https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authentication-usernamepasswordauthenticationfilter)</code></p>
+  <aside>
+  💡 判断当前请求是否需要认证
+  
+  </aside>
+  </li>
+<li><p>ConcurrentSessionFilter</p>
+</li>
+<li><p>OpenIDAuthenticationFilter</p>
+</li>
+<li><p>DefaultLoginPageGeneratingFilter</p>
+</li>
+<li><p>DefaultLogoutPageGeneratingFilter</p>
+</li>
+<li><p><code>[DigestAuthenticationFilter](https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authentication-digest)</code></p>
+</li>
+<li><p>BearerTokenAuthenticationFilter</p>
+</li>
+<li><p><code>[BasicAuthenticationFilter](https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authentication-basic)</code></p>
+</li>
+<li><p>RequestCacheAwareFilter</p>
+  <aside>
+  💡 通常用于将原来的客户请求缓存下来，然后登录成功后将缓存的请求从缓存中提取出来。
+  
+  </aside>
+  </li>
+<li><p>SecurityContextHolderAwareRequestFilter</p>
+  <aside>
+  💡 对请求HttpServletRequest采用Wrapper/Decorator模式包装成一个可以访问SecurityContextHolder中安全上下文的SecurityContextHolderAwareRequestWrapper
+  
+  </aside>
+  </li>
+<li><p>JaasApiIntegrationFilter</p>
+</li>
+<li><p>RememberMeAuthenticationFilter</p>
+</li>
+<li><p>AnonymousAuthenticationFilter</p>
+</li>
+<li><p>OAuth2AuthorizationCodeGrantFilter</p>
+</li>
+<li><p>SessionManagementFilter</p>
+  <aside>
+  💡 检测从请求处理开始到目前是否有用户登录认证，如果有做相应的 session 管理，比如针对为新登录用户创建新的 session（session fixation防护）和设置新的 csrf token 等。
+  
+  </aside>
+  </li>
+<li><p><code>[ExceptionTranslationFilter](https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-exceptiontranslationfilter)</code></p>
+  <aside>
+  💡 处理 `AccessDeniedException` 和 `AuthenticationException` 异常，将它们转换成相应的 HTTP 响应。
+  
+  </aside>
+  </li>
+<li><p><code>[FilterSecurityInterceptor](https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authorization-filtersecurityinterceptor)</code></p>
+</li>
+<li><p>SwitchUserFilter</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="9-6-Handling-Security-Exceptions"><a href="#9-6-Handling-Security-Exceptions" class="headerlink" title="9.6. Handling Security Exceptions"></a>9.6. Handling Security Exceptions</h2><p><code>ExceptionTranslationFilter</code> 将会把 <code>AccessDeniedException</code> 和 <code>AuthenticationException</code> 转换成 HTTP 响应。</p>
+<p><code>ExceptionTranslationFilter</code> 作为一个 Security Filter 插入到 FilterChainProxy 中。</p>
+<p><img src="/note-of-spring-security/Untitled%206.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%206.png"></p>
+<p>元素过多</p>
+<ul>
+<li>DelegatingFilterProxy</li>
+<li>FilterChainProxy（Bean Filter）</li>
+<li>SecurityFilterChain</li>
+</ul>
+<h1 id="10-Authentication-身份验证"><a href="#10-Authentication-身份验证" class="headerlink" title="10. Authentication 身份验证"></a>10. Authentication 身份验证</h1><p><strong>Architecture Components</strong>（体系结构组件）</p>
+<ul>
+<li><code>SecurityContextHolder</code> - <code>Spring Security</code>存储身份验证的详细信息的地方</li>
+<li><code>SecurityContext</code> - 来源于 <code>SecurityContextHolder</code> ，包含当前通过验证用户的身份验证信息</li>
+<li><code>Authentication</code> - 可作为 <code>AuthenticationManager</code> 的输入，提供用户用于身份验证或是 <code>SecurityContext</code> 当前用户的凭证</li>
+<li><code>GrantedAuthority</code> - 在 <code>Authentication</code> 中授予主体（principal）的权限（例如角色、域 scope 等）</li>
+<li><code>AuthenticationManager</code> - 定义了 Spring Security 执行认证的 API</li>
+<li><code>ProviderManager</code> - <code>AuthenticationManager</code> 最常用的实现</li>
+<li><code>AuthenticationProvider</code> - <code>ProviderManeager</code> 用于执行特定类型的身份验证</li>
+<li><code>Request Credentials with AuthenticationEntryPoint</code> - 客户端用于请求凭证（例如重定向到登录页，发送 <code>WWW-Authenticate</code> 响应等）</li>
+<li><code>AbstractAuthenticationProcessingFilter</code> - 用于身份验证的基础 <code>Filter</code> 。由此能很好地了解上层身份验证流程以及各个部件是如何一起工作的。</li>
+</ul>
+<p><strong>Authentication Mechanisms</strong>（身份验证机制&#x2F;认证机制）</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authentication-unpwd">Username and Password</a> - how to authenticate with a username&#x2F;password</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#oauth2login">OAuth 2.0 Login</a> - OAuth 2.0 Log In with OpenID Connect and non-standard OAuth 2.0 Login (i.e. GitHub)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-saml2">SAML 2.0 Login</a> - SAML 2.0 Log In</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-cas">Central Authentication Server (CAS)</a> - Central Authentication Server (CAS) Support</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-rememberme">Remember Me</a> - How to remember a user past session expiration</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-jaas">JAAS Authentication</a> - Authenticate with JAAS</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-openid">OpenID</a> - OpenID Authentication (not to be confused with OpenID Connect)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-preauth">Pre-Authentication Scenarios</a> - Authenticate with an external mechanism such as <a target="_blank" rel="noopener" href="https://www.siteminder.com/">SiteMinder</a> or Java EE security but still use Spring Security for authorization and protection against common exploits.</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-x509">X509 Authentication</a> - X509 Authentication</li>
+</ul>
+<h2 id="10-1-SecurityContextHolder"><a href="#10-1-SecurityContextHolder" class="headerlink" title="10.1. SecurityContextHolder"></a>10.1. SecurityContextHolder</h2><p>作为 <code>Spring Security</code> 的认证模型核心，它包含了 <code>SecurityContext</code> 。</p>
+<p><img src="/note-of-spring-security/Untitled%207.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%207.png"></p>
+<p><code>SecurityContextHolder</code>是 <code>Spring Security</code> 用来存储了已认证用户的详细信息的类。</p>
+<p><strong>表示用户已通过身份验证最简单的方法就是</strong> <code>Set</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">SecurityContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> SecurityContextHolder.createEmptyContext();<span class="hljs-comment">// 1 </span><br><span class="hljs-type">Authentication</span> <span class="hljs-variable">authentication</span> <span class="hljs-operator">=</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">TestingAuthenticationToken</span>(<span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;password&quot;</span>, <span class="hljs-string">&quot;ROLE_USER&quot;</span>); <span class="hljs-comment">// 2</span><br>context.setAuthentication(authentication);<br><br>SecurityContextHolder.setContext(context); <span class="hljs-comment">// 3</span><br></code></pre></td></tr></table></figure>
+
+<aside>
+💡 1、首先创建一个新的 `SecurityContext` 实例，而不是使用 `SecurityContextHolder.getContext().setAuthentication(authentication)` ，从而避免多线程的竞争问题。
+2、Spring Security 不关心 `Authentication`的实现。更常见的方案是使用 `UsernamePasswordAuthenticationToken(userDetails, password, authorities)`
+3、Spring Security 将使用这份信息去 authorization（授权）
+
+</aside>
+
+<p><strong>访问当前已认证的用户信息</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">SecurityContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> SecurityContextHolder.getContext();<br><span class="hljs-type">Authentication</span> <span class="hljs-variable">authentication</span> <span class="hljs-operator">=</span> context.getAuthentication();<br><span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> authentication.getName();<br><span class="hljs-type">Object</span> <span class="hljs-variable">principal</span> <span class="hljs-operator">=</span> authentication.getPrincipal();<br>Collection&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">GrantedAuthority</span>&gt; authorities = authentication.getAuthorities();<br></code></pre></td></tr></table></figure>
+
+<p>默认情况下，<code>SecurityContextHolder</code> 使用 <code>ThreadLocal</code> 存储信息，意味着没有显式传参给方法，也能在同一线程方法中使用 <code>SecurityContext</code>。</p>
+<p>如果在当前主体的请求被处理后清除线程，那么以这种方式使用 <code>ThreadLocal</code> 是非常安全的。<code>FilterChainProxy</code> 确保 <code>SecurityContext</code> 总是被清除。</p>
+<p>有些应用程序并不完全适合使用 <code>ThreadLocal</code>，这是因为它们使用线程的特定方式。可以根据具体的场景使用 <code>SecurityContextHolder</code> 不同的策略。</p>
+<h2 id="10-2-SecurityContext"><a href="#10-2-SecurityContext" class="headerlink" title="10.2 SecurityContext"></a>10.2 SecurityContext</h2><p> 从 <code>SecurityContextHolder</code> 可以获得 <code>SecurityContext</code>，包含了 <code>Authentication</code> 对象。</p>
+<h2 id="10-3-Authentication"><a href="#10-3-Authentication" class="headerlink" title="10.3. Authentication"></a>10.3. Authentication</h2><p><code>Authentication</code> 主要用于两个意图：</p>
+<ul>
+<li>提供认证： <code>AuthenticationManager</code> 的输入，用于提供用户身份验证的凭据。这种情况，<code>isAuthenticated()</code> 返回 <code>false</code>。</li>
+<li>认证成功：表示当前经过身份验证的用户，<code>isAuthenticated()</code> 返回 <code>true</code>。当前的<code>Authentication</code> 可以从 <code>SecurityContext</code> 获得。</li>
+</ul>
+<p><code>Authentication</code> 包含：</p>
+<ul>
+<li><code>principal</code> - 标识用户。通过 username&#x2F;password 认证的通常是 <code>UserDetails</code> 的实例。</li>
+<li><code>credentials</code> - 密码。通常确保在用户登录后清除，避免泄露。</li>
+<li><code>authorities</code> - 用户被授予的上层权限（the <code>[GrantedAuthority</code>s](<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authentication-granted-authority">https://docs.spring.io/spring-security/site/docs/5.3.5.RELEASE/reference/html5/#servlet-authentication-granted-authority</a>) are high level permissions the user is granted.） A few examples are roles or scopes.</li>
+</ul>
+<h2 id="10-4-GrantedAuthority（权限）"><a href="#10-4-GrantedAuthority（权限）" class="headerlink" title="10.4. GrantedAuthority（权限）"></a>10.4. GrantedAuthority（权限）</h2><p>角色、作用域。</p>
+<p><code>GrantedAuthority</code>s 可以通过 <code>Authentication.getAuthorities()</code> 方法来获得。方法返回 <code>GrantedAuthority</code> 对象的集合。<code>GrantedAuthority</code> 就是授予主体的权限。这些权限通常就是 “roles”，例如 <code>ROLE_ADMINISTRATOR</code> 或 <code>ROLE_HR_SUPERVISOR</code> 。这些角色后续配置用于 web 授权，方法授权和域对象授权。Other parts of Spring Security are capable of interpreting these authorities, and expect them to be present. When using username&#x2F;password based authentication GrantedAuthoritys are usually loaded by the UserDetailsService.</p>
+<p>Usually the GrantedAuthority objects are application-wide permissions. They are not specific to a given domain object. Thus, you wouldn’t likely have a GrantedAuthority to represent a permission to Employee object number 54, because if there are thousands of such authorities you would quickly run out of memory (or, at the very least, cause the application to take a long time to authenticate a user). Of course, Spring Security is expressly designed to handle this common requirement, but you’d instead use the project’s domain object security capabilities for this purpose.</p>
+<h2 id="10-5-AuthenticationManager"><a href="#10-5-AuthenticationManager" class="headerlink" title="10.5. AuthenticationManager"></a>10.5. AuthenticationManager</h2><p><code>AuthenticationManager</code> 是定义 Spring Security 过滤器如何执行身份验证的 API。由调用 <code>AuthenticationManager</code> 的控制器（即 Spring Security Filters）在 <code>SecurityContextHolder</code> 上设置返回的身份验证。如果没有集成 Spring Security 的过滤器，可以直接设置 <code>SecurityContextHolder</code>  而不需要使用 <code>AuthenticationManager</code> 。</p>
+<h2 id="10-6-ProviderManager"><a href="#10-6-ProviderManager" class="headerlink" title="10.6. ProviderManager"></a>10.6. ProviderManager</h2><p><code>ProviderManager</code> 是 <code>AuthenticationManager</code> 最常见的实现。<code>ProviderManager</code> 代理了一个 AuthenticationProviders 的列表（List）. 每一个 <code>AuthenticationProvider</code> 都有机会去指出身份验证为成功，失败或者不能做出判断并允许下游的 AuthenticationProvider 去决策。如果配置的 AuthenticationProviders 都不能够验证身份，那么身份验证会伴随 ProviderNotFoundException 异常失败，代表找不到该 Authentication 身份验证的相关支持。</p>
+<p><img src="/note-of-spring-security/Untitled%208.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%208.png"></p>
+<p>事实上每个 <code>AuthenticationProvider</code> 都可以执行特定方式的认证。例如，其中一个 <code>AuthenticationProvider</code> 能够验证 账号&#x2F;密码，另一个能够通过 SAML 的方式进行验证。这就支持只暴露一个 <code>AuthenticationManager</code> bean 就能够支持多种方式的身份验证。</p>
+<p><code>ProviderManager</code> 也可以配置一个（可选的）父级 <code>AuthenticationManager</code> ，用于没有 <code>AuthenticationProvider</code> 能够执行身份验证时进行决策。这个父级通常是一个 <code>ProviderManager</code> 实现。</p>
+<p><img src="/note-of-spring-security/Untitled%209.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%209.png"></p>
+<p>通常，多个 <code>ProviderManager</code> 可以共享同一个父级 <code>AuthenticationManager</code> 。这种实践方式常见于多个 <code>SecurityFilterChain</code> 有部分公共的身份认证（共享的父级 <code>AuthenticationManager</code>），也有部分不同的身份验证机制（不同的 <code>ProviderManager</code> 实例）。</p>
+<p><img src="/note-of-spring-security/Untitled%2010.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%2010.png"></p>
+<p>默认情况下，<code>ProviderManager</code> 会尝试去清除由成功认证请求返回的 <code>Authentication</code> 对象种的敏感凭证信息。这可以防止诸如密码之类的信息在 <code>HttpSession</code> 中长时间保留。</p>
+<p>在使用用户对象缓存时（例如，在无状态应用中提升性能），可能有潜在的问题。如果 <code>Authentication</code> 在缓存中包含了对象（例如 <code>UserDetails</code> 实例）的引用，而它的凭证被移除，这将会导致不再能够通过缓存的值进行身份验证。如果你正在使用缓存，必须考虑到这一点。一个常见的解决方案是先复制对象，要么在缓存中实现，要么在创建返回 <code>Authentication</code> 对象的 <code>AuthenticationProvider</code> 中实现。另外，可以考虑禁止 ProviderManger  的<code>eraseCredentialsAfterAuthentication</code> 字段。</p>
+<h2 id="10-7-AuthenticationProvider"><a href="#10-7-AuthenticationProvider" class="headerlink" title="10.7. AuthenticationProvider"></a>10.7. AuthenticationProvider</h2><p>可以注入多种 <code>AuthenticationProvider</code> s 到 <code>ProviderManager</code> 中。每个 <code>AuthenticationProvider</code> 都执行特定方式的认证过程。例如 <code>DaoAuthenticationProvider</code> 支持基于用户名&#x2F;密码的认证，而 <code>JwtAuthenticationProvider</code> 支持 JWT token 验证。</p>
+<h2 id="10-8-Request-Credentials-with-AuthenticationEntryPoint"><a href="#10-8-Request-Credentials-with-AuthenticationEntryPoint" class="headerlink" title="10.8. Request Credentials with AuthenticationEntryPoint"></a>10.8. Request Credentials with <code>AuthenticationEntryPoint</code></h2><p><code>AuthenticationEntryPoint</code> 是客户端用于请求凭证发送的 HTTP 相应。 </p>
+<p>有些时候客户端会携带凭证（例如账号&#x2F;密码）去请求资源。在这些情况下，Spring Security不需要提供从客户端请求凭据的HTTP响应，因为它们已经包含在内了。</p>
+<p>其它情况下，客户端会向他们没有权限访问的资源发出未经身份验证的请求。<code>AuthenticationEntryPoint</code> 的实现用于客户端请求凭证。其实现可能会执行重定向到登录页，返回 WWW-Authenticate 响应头，等等。</p>
+<h2 id="10-9-AbstractAuthenticationProcessingFilter"><a href="#10-9-AbstractAuthenticationProcessingFilter" class="headerlink" title="10.9. AbstractAuthenticationProcessingFilter"></a>10.9. AbstractAuthenticationProcessingFilter</h2><p><code>AbstractAuthenticationProcessingFilter</code> 是用于认证用户凭证的基础 <code>Filter</code> 。在凭证被验证之前，Spring Security 通常会使用 <code>AuthenticationEntryPoint</code> 来请求凭证。</p>
+<p>接下来，<code>AbstractAuthenticationProcessingFilter</code> 可以验证提交的任何身份验证请求。</p>
+<p><img src="/note-of-spring-security/Untitled%2011.png" srcset="/img/loading.gif" lazyload alt="/../image/note-of-spring-security/Untitled%2011.png"></p>
+<ol>
+<li>当用户提交他们的凭证，<code>AbstractAuthenticationProcessingFilter</code> 会从 <code>HttpServletRequest</code> 创建一个 <code>Authentication</code> 去做身份验证。<code>Authentication</code> 的类型取决于 <code>AbstractAuthenticationProcessingFilter</code> 的子类。例如，<code>UsernamePasswordAuthenticationFilter</code> 从 <code>HttpServletRequest</code> 提交的 username 和 password 创建一个 <code>UsernamePasswordAuthenticationToken</code> （<code>Authentication</code> 的一种实现）。</li>
+<li>接着，<code>Authentication</code> 传递到 <code>AuthenticationManager</code> 做身份验证。</li>
+<li>如果身份验证失败，则<ul>
+<li>清空 <code>SecurityContextHolder</code></li>
+<li>调用 <code>RememberMeServices.loginFail</code> 。如果没有配置 remember me，则无操作。</li>
+<li>调用 <code>AuthenticationFailureHandler</code></li>
+</ul>
+</li>
+<li>如果身份验证成功，则<ul>
+<li><code>SessionAuthenticationStrategy</code> 收到新的登录通知</li>
+<li><code>Authentication</code> 被 set 到 <code>SecurityContextHolder</code> 。后续<code>SecurityContextPersistenceFilter</code> 会将 <code>SecurityContext</code> 保存到 <code>HttpSession</code> 。</li>
+<li>调用 <code>RememberMeServices.loginSuccess</code> 。如果没有配置 remember me，则无操作。</li>
+<li><code>ApplicationEventPublisher</code> 发布 <code>InteractiveAuthenticationSuccessEvent</code> 。</li>
+</ul>
+</li>
+</ol>
+<h2 id="10-17-CAS-Authentication"><a href="#10-17-CAS-Authentication" class="headerlink" title="10.17. CAS Authentication"></a>10.17. CAS Authentication</h2><h1 id="11-Authorization"><a href="#11-Authorization" class="headerlink" title="11. Authorization"></a>11. Authorization</h1><h2 id="11-1-Authorization-Architecture"><a href="#11-1-Authorization-Architecture" class="headerlink" title="11.1 Authorization Architecture"></a>11.1 Authorization Architecture</h2><p>在本部分中，我们将探索在第1部分中介绍的不同的 <code>AbstractSecurityInterceptor</code> 实现。然后，我们将继续探索如何通过使用域访问控制列表来调优授权。</p>
+<h3 id="11-1-1-Authorities"><a href="#11-1-1-Authorities" class="headerlink" title="11.1.1. Authorities"></a>11.1.1. Authorities</h3><p>身份验证，讨论所有身份验证实现如何存储授予权限对象的列表。</p>
+<p>这些代表了被授予给用户权限。 <code>AuthenticationManager</code> 插入<code>GrantedAuthority</code> 对象到 <code>Authentication</code> 中，之后授权决策时由 <code>AccessDecisionManager</code>读取。</p>
+<p><code>GrantedAuthority</code> 是只有一个方法的接口，表示已认证对象被授予的权限。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">String <span class="hljs-title function_">getAuthority</span><span class="hljs-params">()</span>;<br></code></pre></td></tr></table></figure>
+
+<p>一般由 AccessDecisionManager 获取权限的 String 形式，来做最终的访问控制决策。</p>
+<p>如果 String 不能很好的表示，应该被认定为“复杂”权限，并且该接口返回 null。（例如存储应用于不同客户账号的操作列表和权限阈值的实现。将这个复杂的授权表示为字符串将非常困难）</p>
+<p>返回 <code>null</code> 会让 <code>AccessDecisionManager</code> 特别支持 <code>GrantedAuthority</code> 实现来识别权限列表。</p>
+<p>Spring Security 包括一个具体的 <code>GrantedAuthority</code> 实现，<code>SimpleGrantedAuthority</code>。它将任何用户指定的字符串转换为已授予的权限。安全体系结构中包含的所有 <code>AuthenticationProvider</code>都使用<code>SimpleGrantedAuthority</code> 来填充身份验证对象。</p>
+<h3 id="11-1-2-Pre-Invocation-Handling（调用前处理）"><a href="#11-1-2-Pre-Invocation-Handling（调用前处理）" class="headerlink" title="11.1.2. Pre-Invocation Handling（调用前处理）"></a>11.1.2. Pre-Invocation Handling（调用前处理）</h3><p>Spring Security 提供了用于控制对安全对象（如方法调用或web请求）访问拦截器。</p>
+<p><code>AccessDecisionManager</code> 对是否允许进行调用做出调用前决策。</p>
+<ul>
+<li><strong>The AccessDecisionManager</strong></li>
+</ul>
+<p><code>AccessDecisionManager</code> 由 <code>AbstractSecurityInterceptor</code> 调用，负责做出最终的访问控制决策。</p>
+<p><code>AccessDecisionManager</code> 接口包含 3 个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">decide</span><span class="hljs-params">(Authentication authentication, Object secureObject,</span><br><span class="hljs-params">    Collection&lt;ConfigAttribute&gt; attrs)</span> <span class="hljs-keyword">throws</span> AccessDeniedException;<br><br><span class="hljs-type">boolean</span> <span class="hljs-title function_">supports</span><span class="hljs-params">(ConfigAttribute attribute)</span>;<br><br><span class="hljs-type">boolean</span> <span class="hljs-title function_">supports</span><span class="hljs-params">(Class clazz)</span>;<br></code></pre></td></tr></table></figure>
+
+<p><code>AccessDecisionManager</code> 的 <code>decision</code> 方法传递了它做出授权决策所需的所有相关信息。特别是，通过传递安全对象，可以检查实际安全对象调用中包含的参数。例如，我们假设安全对象是一个方法调用。</p>
+<p>如果访问被拒绝，实现将抛出AccessDeniedException异常。</p>
+<ul>
+<li><p><strong>Voting-Based AccessDecisionManager Implementations（基于投票的实现）</strong></p>
+<p>  <img src="/note-of-spring-security/Untitled%2012.png" srcset="/img/loading.gif" lazyload alt="Voting Decision Manager"></p>
+<p>  Voting Decision Manager</p>
+</li>
+</ul>
+<h2 id="11-2-Authorize-HttpServletRequest-with-FilterSecurityInterceptor"><a href="#11-2-Authorize-HttpServletRequest-with-FilterSecurityInterceptor" class="headerlink" title="11.2. Authorize HttpServletRequest with FilterSecurityInterceptor"></a>11.2. Authorize HttpServletRequest with FilterSecurityInterceptor</h2><h2 id="11-3-Expression-Based-Access-Control（基于表达式的访问控制）"><a href="#11-3-Expression-Based-Access-Control（基于表达式的访问控制）" class="headerlink" title="11.3. Expression-Based Access Control（基于表达式的访问控制）"></a>11.3. Expression-Based Access Control（基于表达式的访问控制）</h2><h2 id="11-4-Secure-Object-Implementations"><a href="#11-4-Secure-Object-Implementations" class="headerlink" title="11.4. Secure Object Implementations"></a>11.4. Secure Object Implementations</h2><h2 id="11-5-Method-Security"><a href="#11-5-Method-Security" class="headerlink" title="11.5. Method Security"></a>11.5. Method Security</h2><h2 id="11-6-Domain-Object-Security（ACLs）"><a href="#11-6-Domain-Object-Security（ACLs）" class="headerlink" title="11.6. Domain Object Security（ACLs）"></a>11.6. Domain Object Security（ACLs）</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Spring/" class="category-chain-item">Spring</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Spring/">#Spring</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spring Security 笔记</div>
+      <div>https://quan7u.github.io/note-of-spring-security</div>
+    </div>
+    <div class="license-meta">
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月14日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/note-of-websocket" title="WebSocket笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">WebSocket笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'quan7u/quan7u.github.io');
+      s.setAttribute('issue-term', 'url');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

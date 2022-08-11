@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="配置管理是 Nacos 的关键特性之一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nacos配置管理">
+<meta property="og:url" content="https://quan7u.github.io/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="quan7u">
+<meta property="og:description" content="配置管理是 Nacos 的关键特性之一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://quan7u.github.io/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled.png">
+<meta property="og:image" content="https://quan7u.github.io/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled%201.png">
+<meta property="og:image" content="https://quan7u.github.io/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled%202.png">
+<meta property="og:image" content="https://quan7u.github.io/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled%203.png">
+<meta property="article:published_time" content="2021-10-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-11T01:10:50.381Z">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://quan7u.github.io/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Nacos配置管理 - quan7u</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"quan7u.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 30vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>quan7u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Nacos配置管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-26 00:00" pubdate>
+          2021年10月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Nacos配置管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Data-Id-格式"><a href="#Data-Id-格式" class="headerlink" title="Data Id 格式"></a>Data Id 格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$&#123;prefix&#125;</span>-<span class="hljs-variable">$&#123;spring.profiles.active&#125;</span>.<span class="hljs-variable">$&#123;file-extension&#125;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>prefix</code> 默认为 <code>spring.application.name</code> 的值，也可以通过配置项 <code>spring.cloud.nacos.config.prefix</code>来配置。</li>
+<li><code>spring.profiles.active</code> 即为当前环境对应的 profile，详情可以参考 <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html#boot-features-profiles">Spring Boot文档</a>。 <strong>注意：当 <code>spring.profiles.active</code> 为空时，对应的连接符 &#96;&#96; 也将不存在，dataId 的拼接格式变成 <code>$&#123;prefix&#125;.$&#123;file-extension&#125;</code></strong></li>
+<li><code>file-exetension</code> 为配置内容的数据格式，可以通过配置项 <code>spring.cloud.nacos.config.file-extension</code> 来配置。目前只支持 <code>properties</code> 和 <code>yaml</code> 类型。</li>
+</ul>
+<h2 id="自动更新"><a href="#自动更新" class="headerlink" title="自动更新"></a>自动更新</h2><p>Spring Cloud 原生注解 <code>@RefreshScope</code> 实现配置自动更新</p>
+<h2 id="profile-粒度"><a href="#profile-粒度" class="headerlink" title="profile 粒度"></a>profile 粒度</h2><p>配置加载的时：</p>
+<p>加载 Data Id 为 <code>$&#123;spring.application.name&#125;.$&#123;file-extension:properties&#125;</code> 为前缀的基础配置，</p>
+<p>还有 <code>$&#123;spring.application.name&#125;-$&#123;profile&#125;.$&#123;file-extension:properties&#125;</code> 的基础配置。</p>
+<p>后者优于前者，会覆盖前者的配置</p>
+<blockquote>
+<p>💡 ${spring.profiles.active} 当通过配置文件来指定时必须放在 bootstrap 文件中</p>
+</blockquote>
+<p>实际生产落地时，通常启动服务时指定参数 -Dspring.profiles.active&#x3D;<profile> 来灵活切换</p>
+<h2 id="自定义-namespace-命名空间"><a href="#自定义-namespace-命名空间" class="headerlink" title="自定义 namespace 命名空间"></a>自定义 namespace 命名空间</h2><p>命名空间的概念</p>
+<blockquote>
+<p>用于进行租户粒度的配置隔离。<br>不同的命名空间下，可以存在相同的 Group 或 Data ID 的配置。<br>Namespace 的常用场景之一是不同环境的配置的区分隔离，例如开发测试环境和生产环境的资源（如配置、服务）隔离等。</p>
+</blockquote>
+<p>团队人员不多的时候，会觉得这个直接依靠 profile 来控制开发测试不就可以了？</p>
+<p>确实也是可以，又搜索了一些资料，存在即源于需求，在多人多团队开发时，需要屏蔽一些配置时，命名空间的作用就出来了。</p>
+<p><img src="/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled.png" srcset="/img/loading.gif" lazyload alt="Untitled"></p>
+<p>克隆功能也可以方便地将配置复制到各个命名空间</p>
+<h2 id="自定义-group-组"><a href="#自定义-group-组" class="headerlink" title="自定义 group 组"></a>自定义 group 组</h2><p><code>$&#123;spring.cloud.nacos.config.group&#125;</code> 默认使用的是 DEFAULT_GROUP</p>
+<blockquote>
+<p>💡 该配置必须放在 bootstrap.properties 文件中。<br>添加配置时 Group 的值一定要和 <code>spring.cloud.nacos.config.group</code> 的配置值一致。</p>
+</blockquote>
+<h2 id="自定义扩展的-Data-Id"><a href="#自定义扩展的-Data-Id" class="headerlink" title="自定义扩展的 Data Id"></a>自定义扩展的 Data Id</h2><p><code>spring.cloud.nacos.config.ext-config</code> 配置的集合</p>
+<p>既可以解决多个应用间配置共享的问题，又可以支持一个应用有多个配置文件</p>
+<blockquote>
+<p>💡 多个 Data Id 同时配置时，他的优先级关系是 spring.cloud.nacos.config.extension-configs[n].data-id 其中 n 的值越大，优先级越高。</p>
+</blockquote>
+<p>所以应该把共享配置放前面</p>
+<blockquote>
+<p>💡 spring.cloud.nacos.config.extension-configs[n].data-id 的值必须带文件扩展名，文件扩展名既可支持 properties，又可以支持 yaml&#x2F;yml。 此时 spring.cloud.nacos.config.file-extension 的配置对自定义扩展配置的 Data Id 文件扩展名没有影响。</p>
+</blockquote>
+<h2 id="配置的优先级"><a href="#配置的优先级" class="headerlink" title="配置的优先级"></a>配置的优先级</h2><p>Spring Cloud Alibaba Nacos Config 目前提供了三种配置能力从 Nacos 拉取相关的配置。</p>
+<ul>
+<li>A: 通过 <code>spring.cloud.nacos.config.shared-configs[n].data-id</code> 支持多个共享 Data Id 的配置</li>
+<li>B: 通过 <code>spring.cloud.nacos.config.extension-configs[n].data-id</code> 的方式支持多个扩展 Data Id 的配置</li>
+<li>C: 通过内部相关规则(应用名、应用名+ Profile &#x2F; <code>$&#123;spring.application.name&#125;-$&#123;profile&#125;</code> )自动生成相关的 Data Id 配置</li>
+</ul>
+<p>当三种方式共同使用时，他们的一个优先级关系是：<strong>A &lt; B &lt; C</strong></p>
+<h2 id="共享配置方案设计"><a href="#共享配置方案设计" class="headerlink" title="共享配置方案设计"></a>共享配置方案设计</h2><p><a target="_blank" rel="noopener" href="https://github.com/alibaba/spring-cloud-alibaba/issues/141">[discuss]: nacos config support sharing configuration with multi Applications · Issue #141 · alibaba&#x2F;spring-cloud-alibaba</a></p>
+<h3 id="预期"><a href="#预期" class="headerlink" title="预期"></a>预期</h3><img src="Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled%201.png" srcset="/img/loading.gif" lazyload alt="Untitled" style="zoom:50%;" />
+
+<h3 id="基于域名的配置方式给应用分组"><a href="#基于域名的配置方式给应用分组" class="headerlink" title="基于域名的配置方式给应用分组"></a><strong>基于域名的配置方式给应用分组</strong></h3><img src="Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled%202.png" srcset="/img/loading.gif" lazyload alt="Untitled" style="zoom:50%;" />
+
+<ul>
+<li>优点<ul>
+<li>天然依托于域名的层次关系</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>受限于 group，Data Id 命名同样受限（个数、名称、扩展名）</li>
+<li>学习成本、易错、复杂</li>
+</ul>
+</li>
+</ul>
+<h3 id="shared：自定义的方式来命名-Data-Id"><a href="#shared：自定义的方式来命名-Data-Id" class="headerlink" title="shared：自定义的方式来命名 Data Id"></a>shared：自定义的方式来命名 Data Id</h3><img src="Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/Untitled%203.png" srcset="/img/loading.gif" lazyload alt="Untitled" style="zoom:50%;" />
+
+<p><code>shared.dataids</code> 按顺序依次加载，即越迟加载的优先级最高</p>
+<ul>
+<li>缺点<ul>
+<li>扩展性差（不能配置 group、刷新等等）</li>
+</ul>
+</li>
+</ul>
+<h3 id="ext-config：通过类似面向对象方式的自定义配置"><a href="#ext-config：通过类似面向对象方式的自定义配置" class="headerlink" title="ext-config：通过类似面向对象方式的自定义配置"></a>ext-config：通过类似面向对象方式的自定义配置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">ext-config:</span><br>  <span class="hljs-comment"># 应用配置</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">data-id:</span> <span class="hljs-string">app.properties</span><br>    <span class="hljs-attr">group:</span> <span class="hljs-string">multi-data-ids</span><br>    <span class="hljs-attr">refresh:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-comment"># 数据库配置</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">data-id:</span> <span class="hljs-string">datasource.properties</span><br>    <span class="hljs-attr">group:</span> <span class="hljs-string">multi-data-ids</span><br>  <span class="hljs-comment"># Redis 配置</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">data-id:</span> <span class="hljs-string">redis.properties</span><br>    <span class="hljs-attr">group:</span> <span class="hljs-string">multi-data-ids</span><br></code></pre></td></tr></table></figure>
+
+<p>Nacos 支持第二种（shared.dataids）和第三种（ext-config）共存</p>
+<blockquote>
+<p>个人更推崇第三种 ext</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Nacos/" class="category-chain-item">Nacos</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Nacos配置管理</div>
+      <div>https://quan7u.github.io/Nacos 配置管理/</div>
+    </div>
+    <div class="license-meta">
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月26日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/" title="Spring 启动的一系列">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spring 启动的一系列</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Spring%20%E6%BA%90%E7%A0%81%E9%80%89%E8%AF%BB/" title="Spring 源码选读">
+                        <span class="hidden-mobile">Spring 源码选读</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'quan7u/quan7u.github.io');
+      s.setAttribute('issue-term', 'url');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

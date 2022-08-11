@@ -1,0 +1,863 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="梳理 Sring 容器启动发生了哪些事">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 启动的一系列">
+<meta property="og:url" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/index.html">
+<meta property="og:site_name" content="quan7u">
+<meta property="og:description" content="梳理 Sring 容器启动发生了哪些事">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211115153512549.png">
+<meta property="og:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211115162814722.png">
+<meta property="og:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211116102630752.png">
+<meta property="og:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211116104126896.png">
+<meta property="og:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211115174354950.png">
+<meta property="og:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211122160043672.png">
+<meta property="og:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211122161455795.png">
+<meta property="article:published_time" content="2021-11-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-11T01:10:50.391Z">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://quan7u.github.io/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211115153512549.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Spring 启动的一系列 - quan7u</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"quan7u.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 30vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>quan7u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spring 启动的一系列"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-08 00:00" pubdate>
+          2021年11月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          84 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Spring 启动的一系列</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h1><ul>
+<li>元信息配置 - XML、注解配置 Bean</li>
+<li>使用 BeanDefinition 包装 Bean 元信息</li>
+<li>注册 BeanDefinition</li>
+</ul>
+<p>组件构成：bean、context、core</p>
+<h1 id="调用-BeanFactoryPostProcessor"><a href="#调用-BeanFactoryPostProcessor" class="headerlink" title="调用 BeanFactoryPostProcessor"></a>调用 BeanFactoryPostProcessor</h1><p>核心方法 invokeBeanFactoryPostProcessors</p>
+<p>实际上有两种后置处理器</p>
+<ul>
+<li><p>BeanFactoryPostProcessor</p>
+</li>
+<li><p>BeanDefinitionRegistryPostProcessor （继承于 <code>BeanFactoryPostProcessor</code>）</p>
+</li>
+</ul>
+<p>流程</p>
+<ol>
+<li><p>创建 processedBeans 集合，记录已处理的 bean</p>
+</li>
+<li><p>获取 bean factory 内部的后置处理器，判断类型是否为 BeanDefinitionRegistryPostProcessors</p>
+<ul>
+<li><p>是 -&gt; 调用该后置处理器的 <code>postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)</code> 方法</p>
+</li>
+<li><p>否 -&gt; 仅加入到集合 <code>List&lt;BeanFactoryPostProcessor&gt; regularPostProcessors</code> 中，无其它处理</p>
+</li>
+</ul>
+</li>
+<li><p>创建集合 <code>List&lt;BeanDefinitionRegistryPostProcessor&gt; currentRegistryProcessors</code></p>
+</li>
+<li><p>首先，调用实现了 <code>PriorityOrdered</code> 的 <code>BeanDefinitionRegistryPostProcessor</code></p>
+<ol>
+<li><p>从 bean factory 中根据类型 <code>BeanDefinitionRegistryPostProcessor.class</code> 获取 bean 名称数组</p>
+</li>
+<li><p>遍历数组，判断 bean 是否实现了 <code>PriorityOrdered.class</code> 接口</p>
+<ul>
+<li>是 -&gt; 根据名称 &amp; 类型获取 bean 并加入到集合 currentRegistryProcessors 中，名称加入到集合 processedBeans 中</li>
+</ul>
+</li>
+<li><p>对集合 currentRegistryProcessors  进行排序</p>
+</li>
+<li><p>遍历 <code>currentRegistryProcessors</code>，调用 <code>postProcessBeanDefinitionRegistry</code> 方法</p>
+<ul>
+<li>💡<strong>这里调用了 ConfigurationClassPostProcessor，核心</strong></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>然后，调用实现了 <code>Ordered</code> 的 <code>BeanDefinitionRegistryPostProcessor</code></p>
+<ol>
+<li>从 bean factory 中根据类型 <code>BeanDefinitionRegistryPostProcessor.class</code> 获取 bean 名称数组</li>
+<li>遍历数组，判断 bean 是否被处理过 &amp;&amp; 是否实现了 <code>Ordered.class</code> 接口<ul>
+<li>是 -&gt; 根据名称 &amp; 类型获取 bean 并加入到集合 currentRegistryProcessors 中，名称加入到集合 processedBeans 中</li>
+</ul>
+</li>
+<li>排序，同上 3.3</li>
+<li>调用，同上 3.4</li>
+</ol>
+</li>
+<li><p>最后，调用所有的 <code>BeanDefinitionRegistryPostProcessor</code>，直到没有没处理过的后置处理器</p>
+<ul>
+<li>获取 bean -&gt; 判断是否处理过 -&gt; 排序、调用</li>
+</ul>
+</li>
+<li><p>调用上面所有已经处理过的 <code>BeanDefinitionRegistryPostProcessor</code> 的 <code>postProcessBeanFactory</code> 方法</p>
+</li>
+<li><p>调用 <code>regularPostProcessors</code>（内部的不是 <code>BeanDefinitionRegistryPostProcessor</code> 的 <code>BeanFactoryPostProcessor</code>）的<code>postProcessBeanFactory</code> 方法</p>
+</li>
+<li><p>后续处理 <code>BeanFactoryPostProcessor</code> 也是相似的流程，不再赘述</p>
+</li>
+</ol>
+<h2 id="ConfigurationClassPostProcessor"><a href="#ConfigurationClassPostProcessor" class="headerlink" title="ConfigurationClassPostProcessor"></a>ConfigurationClassPostProcessor</h2><p>配置类后置处理器实现了 <code>BeanDefinitionRegistryPostProcessor</code>，拥有两个后置处理方法</p>
+<p>流程</p>
+<ol>
+<li><p>获取注册表里的 <code>beanDefinitionName</code> 数组（实际上就是获取 <code>DefaultListableBeanFactory</code> 的 <code>beanDefinitionNames</code> 集合</p>
+</li>
+<li><p>遍历检查 <code>beanDefinition</code> 是否是配置类</p>
+</li>
+<li><p>解析每个 @Configuration 类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (bd <span class="hljs-keyword">instanceof</span> AnnotatedBeanDefinition) &#123;<br>    parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());<br>&#125;<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (bd <span class="hljs-keyword">instanceof</span> AbstractBeanDefinition &amp;&amp; ((AbstractBeanDefinition) bd).hasBeanClass()) &#123;<br>    parse(((AbstractBeanDefinition) bd).getBeanClass(), holder.getBeanName());<br>&#125;<br><span class="hljs-keyword">else</span> &#123;<br>    parse(bd.getBeanClassName(), holder.getBeanName());<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>parse 内部递归处理配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 递归处理配置类及其父类</span><br><span class="hljs-type">SourceClass</span> <span class="hljs-variable">sourceClass</span> <span class="hljs-operator">=</span> asSourceClass(configClass, filter);<br><span class="hljs-keyword">do</span> &#123;<br>    sourceClass = doProcessConfigurationClass(configClass, sourceClass, filter);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>处理 <code>beanDefinition</code> 的属性，比如基础包路径（<code>basePackges</code>）、懒加载、过滤器等</p>
+<p><img src="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211115153512549.png" srcset="/img/loading.gif" lazyload alt="image-20211115153512549"></p>
+<ul>
+<li>当没有使用 <code>componentScan</code> 注解且 <code>basePackges</code> 为空时，会使用启动类 <code>xxxApplication</code> 的全限定类路径</li>
+</ul>
+</li>
+<li><p>扫描路径下的资源（.class）但排除对配置类本身的处理</p>
+<ol>
+<li><p>判断类不匹配任何排除过滤器（<code>excludeFilters</code>）并至少匹配一个包含过滤器（<code>includeFilters</code>）</p>
+<p>这里的包含过滤器有两个，一个是 <code>Component</code> 的，一个是 <code>ManagedBean</code> 的</p>
+<p><img src="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211115162814722.png" srcset="/img/loading.gif" lazyload alt="image-20211115162814722"></p>
+</li>
+<li><p>判读是否存在 <code>@Conditional</code> 注解，需要跳过</p>
+</li>
+</ol>
+</li>
+<li><p>获取到引导启动类路径下的所有 bean 加入到 <code>candidates</code> 候选集合中，对候选集合继续补充更多设置属性（比如什么 Lazy、Primary、DependsOn 等）</p>
+</li>
+<li><p>检查 bean 名称冲突</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (checkCandidate(beanName, candidate)) &#123;<br>    <span class="hljs-comment">// 无冲突 -&gt; 调用 `registerBeanDefinition` 注册 `BeanDefinition` (将 bean 定义加到 bean factory 的集合中)</span><br>    <span class="hljs-type">BeanDefinitionHolder</span> <span class="hljs-variable">definitionHolder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BeanDefinitionHolder</span>(candidate, beanName);<br>    definitionHolder =<br>        AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, <span class="hljs-built_in">this</span>.registry);<br>    beanDefinitions.add(definitionHolder);<br>    registerBeanDefinition(definitionHolder, <span class="hljs-built_in">this</span>.registry);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>返回从引导类 <code>xxxApplication</code> 扫描到的 <code>beanDefinition</code> 集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 从引导类扫描出一堆 bean 定义后，再从这些 bean 筛选出配置类继续扫描，需要的话会递归解析</span><br><span class="hljs-keyword">for</span> (BeanDefinitionHolder holder : scannedBeanDefinitions) &#123;<br>    <span class="hljs-type">BeanDefinition</span> <span class="hljs-variable">bdCand</span> <span class="hljs-operator">=</span> holder.getBeanDefinition().getOriginatingBeanDefinition();<br>    <span class="hljs-keyword">if</span> (bdCand == <span class="hljs-literal">null</span>) &#123;<br>        bdCand = holder.getBeanDefinition();<br>    &#125;<br>    <span class="hljs-keyword">if</span> (ConfigurationClassUtils.checkConfigurationClassCandidate(bdCand, <span class="hljs-built_in">this</span>.metadataReaderFactory)) &#123;<br>        <span class="hljs-comment">// BeanDefinition 是配置类 -&gt; 解析</span><br>        parse(bdCand.getBeanClassName(), holder.getBeanName());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析：从源类读取注解，成员和方法</p>
+<ol>
+<li>首先，递归处理所有成员（嵌套）类</li>
+<li>处理所有的 <code>@PropertySource</code> 注解</li>
+<li>处理所有的 <code>@ComponentScan</code> 注解</li>
+<li>处理所有的 <code>@Import</code> 注解</li>
+<li>处理所有的 <code>@ImportResource</code> 注解</li>
+<li>逐个处理 <code>@Bean</code> 方法</li>
+<li>处理接口默认方法（Java 8+</li>
+<li>如果存在继承，则处理父类</li>
+</ol>
+</li>
+<li><p>解析的最后一步，延迟处理配置类的类定义，填充配置类的对象集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 对配置类 @Configuration 的 @Import 进行处理 </span><br><span class="hljs-built_in">this</span>.deferredImportSelectorHandler.process();<br></code></pre></td></tr></table></figure>
+
+<p><img src="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211116102630752.png" srcset="/img/loading.gif" lazyload alt="image-20211116102630752"></p>
+<p>可以看到获取候选配置拿到了大量的自动配置的类</p>
+<ol>
+<li><p>根据条件过滤器做筛选操作</p>
+<p><img src="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211116104126896.png" srcset="/img/loading.gif" lazyload alt="image-20211116104126896"></p>
+</li>
+<li><p><code>processImports</code> 递归处理 import 的类，回到第 4 步的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 候选类不是 ImportSelector 也不是 ImportBeanDefinitionRegistrar -&gt;</span><br><span class="hljs-comment">// 作为 @Configuration 类处理</span><br><span class="hljs-built_in">this</span>.importStack.registerImport(<br>    currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());<br>processConfigurationClass(candidate.asConfigClass(configClass), exclusionFilter);<br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>至此，解析操作完成</p>
+</li>
+</ol>
+<p><img src="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211115174354950.png" srcset="/img/loading.gif" lazyload alt="image-20211115174354950"></p>
+<p>可以看到除了在项目中定义的 <code>@Controller</code> 、<code>@Component</code> 、<code>@Configuration</code> 等配置类之外，还有许多自动配置的类</p>
+<h1 id="注册-Bean-后置处理器"><a href="#注册-Bean-后置处理器" class="headerlink" title="注册 Bean 后置处理器"></a>注册 Bean 后置处理器</h1><blockquote>
+<p>org.springframework.context.support.AbstractApplicationContext#registerBeanPostProcessors</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 注册用于拦截 bean 创建的处理器</span><br>registerBeanPostProcessors(beanFactory);<br></code></pre></td></tr></table></figure>
+
+<p>根据优先级对 BeanPostProcessor 进行了排序</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;BeanPostProcessor&gt; priorityOrderedPostProcessors = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>List&lt;BeanPostProcessor&gt; internalPostProcessors = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>List&lt;String&gt; orderedPostProcessorNames = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>List&lt;String&gt; nonOrderedPostProcessorNames = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><br><span class="hljs-keyword">for</span> (String ppName : postProcessorNames) &#123;<br>    <span class="hljs-keyword">if</span> (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) &#123;<br>        <span class="hljs-comment">// 实例化</span><br>        <span class="hljs-type">BeanPostProcessor</span> <span class="hljs-variable">pp</span> <span class="hljs-operator">=</span> beanFactory.getBean(ppName, BeanPostProcessor.class);<br>        priorityOrderedPostProcessors.add(pp);<br>        <span class="hljs-keyword">if</span> (pp <span class="hljs-keyword">instanceof</span> MergedBeanDefinitionPostProcessor) &#123;<br>            internalPostProcessors.add(pp);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (beanFactory.isTypeMatch(ppName, Ordered.class)) &#123;<br>        orderedPostProcessorNames.add(ppName);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        nonOrderedPostProcessorNames.add(ppName);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>按照 PriorityOrdered ——&gt; Ordered ——&gt; regular ——&gt; internal 的顺序</p>
+<p>依次进行初始化（BeanFactory.getBean）和注册（beanFactory.addBeanPostProcessor）</p>
+<h1 id="完成-BeanFactory-初始化"><a href="#完成-BeanFactory-初始化" class="headerlink" title="完成 BeanFactory 初始化"></a>完成 BeanFactory 初始化</h1><blockquote>
+<p>org.springframework.context.support.AbstractApplicationContext#finishBeanFactoryInitialization</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 这一步完成 BeanFactory 上下文的初始化</span><br><span class="hljs-comment">// 实例化所有剩余的（非懒加载的）单例 bean</span><br>finishBeanFactoryInitialization(beanFactory);<br></code></pre></td></tr></table></figure>
+
+<p>3 个 Map</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/** Cache of singleton objects: bean name to bean instance. */</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;(<span class="hljs-number">256</span>);<br><br><span class="hljs-comment">/** Cache of singleton factories: bean name to ObjectFactory. */</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;(<span class="hljs-number">16</span>);<br><br><span class="hljs-comment">/** Cache of early singleton objects: bean name to bean instance. */</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;(<span class="hljs-number">16</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/** List of bean definition names, in registration order. */</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> List&lt;String&gt; beanDefinitionNames = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(<span class="hljs-number">256</span>);<br></code></pre></td></tr></table></figure>
+
+<p>遍历 beanDefinitionNames，如果 BeanDefinition 符合非抽象 &amp; 单例 &amp; 非懒加载，就会进行 getBean 操作</p>
+<p>public 的 getBean 方法会调用 doGetBean 方法，通过入参控制逻辑</p>
+<p><img src="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211122160043672.png" srcset="/img/loading.gif" lazyload alt="image-20211122160043672"></p>
+<p>如果早期手动注册过单例对象，直接用单例缓存（singleton cache）返回</p>
+<p><img src="/Spring%20%E5%90%AF%E5%8A%A8%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97/image-20211122161455795.png" srcset="/img/loading.gif" lazyload alt="image-20211122161455795"></p>
+<p>一些前置校验操作</p>
+<ul>
+<li><p>检查当前线程是否存在创建动作，这个操作可以检测到 Spring 不可解决的循环依赖</p>
+</li>
+<li><p>检查工厂中是否存在 BeanDefinition</p>
+</li>
+<li><p>判断本次操作是否<strong>只做类型检查，而不使用 Bean</strong>，剪枝思维吧，也是通过增加入参（增加）控制方法逻辑</p>
+</li>
+<li><p>处理 @DependsOn 注解，确保当前 Bean 依赖的对象先行初始化</p>
+</li>
+</ul>
+<p>🚩创建 Bean 实例，此处分为 单例、多例和其它，重点还是放在单例上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Create bean instance.</span><br><span class="hljs-keyword">if</span> (mbd.isSingleton()) &#123;<br>    <span class="hljs-comment">// 当 BeanDefinition 为单例时进入此分支</span><br>    <span class="hljs-comment">// 调用 public Object getSingleton(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span><br>    <span class="hljs-comment">// ObjectFactory 是一个函数式接口，只有一个 getObject 方法，此处对其实现</span><br>    <span class="hljs-comment">// 属于是函数式编程中常见的方法传递</span><br>    <span class="hljs-comment">// 下一步进入 getSingleton 方法</span><br>    sharedInstance = getSingleton(beanName, () -&gt; &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> createBean(beanName, mbd, args);<br>        &#125;<br>        <span class="hljs-keyword">catch</span> (BeansException ex) &#123;<br>            <span class="hljs-comment">// Explicitly remove instance from singleton cache: It might have been put there</span><br>            <span class="hljs-comment">// eagerly by the creation process, to allow for circular reference resolution.</span><br>            <span class="hljs-comment">// Also remove any beans that received a temporary reference to the bean.</span><br>            destroySingleton(beanName);<br>            <span class="hljs-keyword">throw</span> ex;<br>        &#125;<br>    &#125;);<br>    bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);<br>&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (mbd.isPrototype()) &#123;......<br></code></pre></td></tr></table></figure>
+
+<p>getSingleton 方法内部将 Spring 对象池（singletonObjects）作为🔒，保证该段方法逻辑同步执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Object <span class="hljs-title function_">getSingleton</span><span class="hljs-params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> &#123;<br>		<span class="hljs-keyword">synchronized</span> (<span class="hljs-built_in">this</span>.singletonObjects) &#123;<br>            <span class="hljs-comment">// ......</span><br>            <span class="hljs-comment">// 单例创建前的回调</span><br>            beforeSingletonCreation(beanName);<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-comment">// 函数方法参数，实际调用外部传入的方法</span><br>                singletonObject = singletonFactory.getObject();<br>                newSingleton = <span class="hljs-literal">true</span>;<br>            &#125;<br>            <span class="hljs-keyword">catch</span> (IllegalStateException ex) &#123;<br>                <span class="hljs-comment">// ......</span><br>            &#125;<br>            <span class="hljs-keyword">catch</span> (BeanCreationException ex) &#123;<br>                <span class="hljs-comment">// ......</span><br>            &#125;<br>            <span class="hljs-keyword">finally</span> &#123;<br>                <span class="hljs-keyword">if</span> (recordSuppressedExceptions) &#123;<br>                    <span class="hljs-built_in">this</span>.suppressedExceptions = <span class="hljs-literal">null</span>;<br>                &#125;<br>                <span class="hljs-comment">// 单例创建后的回调</span><br>                afterSingletonCreation(beanName);<br>            &#125;<br>            <span class="hljs-keyword">if</span> (newSingleton) &#123;<br>                addSingleton(beanName, singletonObject);<br>            &#125;<br>            <span class="hljs-keyword">return</span> singletonObject;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="预初始化"><a href="#预初始化" class="headerlink" title="预初始化"></a>预初始化</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">preInstantiateSingletons</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> BeansException &#123;<br>    <span class="hljs-keyword">if</span> (logger.isTraceEnabled()) &#123;<br>        logger.trace(<span class="hljs-string">&quot;Pre-instantiating singletons in &quot;</span> + <span class="hljs-built_in">this</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// Iterate over a copy to allow for init methods which in turn register new bean definitions.</span><br>    <span class="hljs-comment">// While this may not be part of the regular factory bootstrap, it does otherwise work fine.</span><br>    List&lt;String&gt; beanNames = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(<span class="hljs-built_in">this</span>.beanDefinitionNames);<br><br>    <span class="hljs-comment">// Trigger initialization of all non-lazy singleton beans...</span><br>    <span class="hljs-keyword">for</span> (String beanName : beanNames) &#123;<br>        <span class="hljs-type">RootBeanDefinition</span> <span class="hljs-variable">bd</span> <span class="hljs-operator">=</span> getMergedLocalBeanDefinition(beanName);<br>        <br>        <span class="hljs-keyword">if</span> (!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()) &#123;<br>            <span class="hljs-comment">// 非抽象 &amp; 单例 &amp; 非懒加载</span><br>            <span class="hljs-keyword">if</span> (isFactoryBean(beanName)) &#123;<br>                <span class="hljs-type">Object</span> <span class="hljs-variable">bean</span> <span class="hljs-operator">=</span> getBean(FACTORY_BEAN_PREFIX + beanName);<br>                <span class="hljs-keyword">if</span> (bean <span class="hljs-keyword">instanceof</span> FactoryBean) &#123;<br>                    FactoryBean&lt;?&gt; factory = (FactoryBean&lt;?&gt;) bean;<br>                    <span class="hljs-type">boolean</span> isEagerInit;<br>                    <span class="hljs-keyword">if</span> (System.getSecurityManager() != <span class="hljs-literal">null</span> &amp;&amp; factory <span class="hljs-keyword">instanceof</span> SmartFactoryBean) &#123;<br>                        isEagerInit = AccessController.doPrivileged(<br>                            (PrivilegedAction&lt;Boolean&gt;) ((SmartFactoryBean&lt;?&gt;) factory)::isEagerInit,<br>                            getAccessControlContext());<br>                    &#125;<br>                    <span class="hljs-keyword">else</span> &#123;<br>                        isEagerInit = (factory <span class="hljs-keyword">instanceof</span> SmartFactoryBean &amp;&amp;<br>                                       ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit());<br>                    &#125;<br>                    <span class="hljs-keyword">if</span> (isEagerInit) &#123;<br>                        getBean(beanName);<br>                    &#125;<br>                &#125;<br>            &#125;<br>            <span class="hljs-keyword">else</span> &#123;<br>                getBean(beanName);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// Trigger post-initialization callback for all applicable beans...</span><br>    <span class="hljs-keyword">for</span> (String beanName : beanNames) &#123;<br>        <span class="hljs-type">Object</span> <span class="hljs-variable">singletonInstance</span> <span class="hljs-operator">=</span> getSingleton(beanName);<br>        <span class="hljs-keyword">if</span> (singletonInstance <span class="hljs-keyword">instanceof</span> SmartInitializingSingleton) &#123;<br>            <span class="hljs-type">SmartInitializingSingleton</span> <span class="hljs-variable">smartSingleton</span> <span class="hljs-operator">=</span> (SmartInitializingSingleton) singletonInstance;<br>            <span class="hljs-keyword">if</span> (System.getSecurityManager() != <span class="hljs-literal">null</span>) &#123;<br>                AccessController.doPrivileged((PrivilegedAction&lt;Object&gt;) () -&gt; &#123;<br>                    smartSingleton.afterSingletonsInstantiated();<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>                &#125;, getAccessControlContext());<br>            &#125;<br>            <span class="hljs-keyword">else</span> &#123;<br>                smartSingleton.afterSingletonsInstantiated();<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Spring/" class="category-chain-item">Spring</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Spring/">#Spring</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spring 启动的一系列</div>
+      <div>https://quan7u.github.io/Spring 启动的一系列/</div>
+    </div>
+    <div class="license-meta">
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年11月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/mysql-innodb" title="InnoDB 存储引擎">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">InnoDB 存储引擎</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Nacos%20%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/" title="Nacos配置管理">
+                        <span class="hidden-mobile">Nacos配置管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'quan7u/quan7u.github.io');
+      s.setAttribute('issue-term', 'url');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

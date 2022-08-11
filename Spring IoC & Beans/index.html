@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring IoC &amp; Beans 官方文档学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring IoC &amp; Beans">
+<meta property="og:url" content="https://quan7u.github.io/Spring%20IoC%20&%20Beans/index.html">
+<meta property="og:site_name" content="quan7u">
+<meta property="og:description" content="Spring IoC &amp; Beans 官方文档学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-11T01:10:50.381Z">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Spring IoC &amp; Beans - quan7u</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"quan7u.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 30vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>quan7u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spring IoC &amp; Beans"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-08-14 00:00" pubdate>
+          2021年8月14日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Spring IoC &amp; Beans</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="文档地址"><a href="#文档地址" class="headerlink" title="文档地址"></a>文档地址</h1><p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/5.2.22.RELEASE/spring-framework-reference/core.html">Version 5.2.22.RELEASE</a> </p>
+<p>💡 IoC 控制反转通常也称为依赖注入（DI）</p>
+<p>Spring 定义依赖来源于：</p>
+<ul>
+<li>构造方法参数</li>
+<li>工厂方法参数</li>
+<li>对象实例化之后通过 setter 设置的属性</li>
+<li>工厂方法返回。</li>
+</ul>
+<p>容器在创建 Bean 时注入这些依赖。</p>
+<p>实际运用中，Bean 通过直接构造类或类似 SPI（ServiceLoader） 的机制来控制依赖的实例化和定位。</p>
+<p><code>BeanFactory</code> 接口提供了一种高级的配置机制，能够管理任何类型的对象。</p>
+<p><code>ApplicationContext</code> 是 <code>BeanFactory</code> 的子接口，增加以下特性：</p>
+<ul>
+<li>更容易集成 Spring AOP 的功能</li>
+<li>消息资源处理（国际化相关）</li>
+<li>事件发布</li>
+<li>特定的应用层上下文，如 <code>WebApplicationContext</code> ，用于 Web 应用程序</li>
+</ul>
+<h1 id="Bean-概览"><a href="#Bean-概览" class="headerlink" title="Bean 概览"></a>Bean 概览</h1><p><code>BeanDefinition</code> 表示 Bean 定义，包含以下：</p>
+<ul>
+<li>包限定的类名：通常是 Bean 的实际实现类</li>
+<li>Bean 行为的配置，在容器的行为（scope，生命周期回调等等）</li>
+<li>引用该 Bean 工作所需的其它 Beans。这些 Beans 引用也称为协作者或依赖项</li>
+<li>属性设置，比如池的大小限制，连接数的管理</li>
+</ul>
+<p><a href="Spring%20IoC%20&%20Beans%20243675ce3e8b4fbfa7532282489f69aa/Bean%20%E5%AE%9A%E4%B9%89%20258186a0b65c43ddb63f1efd23e5e51e.csv">Bean 定义</a></p>
+<h2 id="Bean-命名"><a href="#Bean-命名" class="headerlink" title="Bean 命名"></a>Bean 命名</h2><h2 id="实例化-Beans"><a href="#实例化-Beans" class="headerlink" title="实例化 Beans"></a>实例化 Beans</h2><ul>
+<li>通常，在容器通过反射调用构造函数直接创建 bean 的情况，指定要构造的 bean 类，类似于使用 new 操作符的 Java 代码。</li>
+<li>还有种不常见的情况，指定包含用于创建对象的静态工厂方法的实际类，容器调用类上的静态工厂方法来创建 bean。调用静态工厂方法返回的对象类型可以是相同的类，也可以是完全不同的类。</li>
+</ul>
+<h3 id="通过构造器实例化"><a href="#通过构造器实例化" class="headerlink" title="通过构造器实例化"></a>通过构造器实例化</h3><p>这可能是一种兼容性最好的方法（不需要实现指定的接口或按照某种要求进行编码），只需要指定 bean 类就可以了。但根据 IoC 类型可能需要一个默认（空）构造函数。</p>
+<p>Spring 对 bean 的风格没有要求，可以不是标准的 JavaBeans。比如需要使用一个完全不符合 JavaBeans 规范的传统的连接池，Spring 也能管理它。</p>
+<h3 id="通过静态工厂方法实例化"><a href="#通过静态工厂方法实例化" class="headerlink" title="通过静态工厂方法实例化"></a>通过静态工厂方法实例化</h3><p>通过工厂方法来创建 bean。</p>
+<h3 id="实例工厂方法实例化"><a href="#实例工厂方法实例化" class="headerlink" title="实例工厂方法实例化"></a>实例工厂方法实例化</h3><p>通过工厂 bean 的方法来创建 bean。</p>
+<h1 id="4-依赖"><a href="#4-依赖" class="headerlink" title="4. 依赖"></a>4. 依赖</h1><p>一个应用程序肯定不止由一个对象构成的，即便是最简单的程序，也是由几个对象共同协作来完成目标的。</p>
+<h2 id="4-1-依赖注入"><a href="#4-1-依赖注入" class="headerlink" title="4.1. 依赖注入"></a>4.1. 依赖注入</h2><p>DI 有两种主要的变体</p>
+<ul>
+<li>基于构造器的依赖注入</li>
+<li>基于 Setter 方法的依赖注入</li>
+</ul>
+<h3 id="依赖解析过程"><a href="#依赖解析过程" class="headerlink" title="依赖解析过程"></a>依赖解析过程</h3><h1 id="6-自定义-Bean-的机制"><a href="#6-自定义-Bean-的机制" class="headerlink" title="6. 自定义 Bean 的机制"></a>6. 自定义 Bean 的机制</h1><h2 id="6-1-生命周期回调"><a href="#6-1-生命周期回调" class="headerlink" title="6.1. 生命周期回调"></a>6.1. 生命周期回调</h2><p><strong>初始化 Bean 的回调</strong></p>
+<ul>
+<li><code>@PostConstruct</code></li>
+<li>实现 InitializingBean 重写 <code>afterPropertiesSet()</code></li>
+<li>指定的自定义方法：XML 的 init-method &#x2F; @Bean 注解的 initMethod 属性</li>
+</ul>
+<p><strong>销毁 Bean 的回调</strong></p>
+<ul>
+<li><code>@PreDestroy</code></li>
+<li>实现 DisposableBean 重写 <code>destroy()</code></li>
+<li>指定的自定义方法：XML 的 destroy-method &#x2F; @Bean 注解的 destroyMethod 属性</li>
+</ul>
+<p><strong>组合生命周期机制</strong></p>
+<p>控制 Bean 的生命周期行为有三种选择：</p>
+<ul>
+<li>InitializingBean 和 DisposableBean 回调接口</li>
+<li>自定义 <code>init()</code> 和 <code>destroy()</code> 方法</li>
+<li><code>@PostConstruct</code> 和 <code>@PreDestroy</code> 注解</li>
+</ul>
+<p><strong>顺序</strong>：注解 → 回调接口 → 自定义方法</p>
+<p>启动和停止回调</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">org.springframework.context.Lifecycle<br>org.springframework.context.SmartLifecycle<br>org.springframework.context.support.DefaultLifecycleProcessor<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="ApplicationContextAware-and-BeanNameAware"><a href="#ApplicationContextAware-and-BeanNameAware" class="headerlink" title="ApplicationContextAware and BeanNameAware"></a><code>ApplicationContextAware</code> and <code>BeanNameAware</code></h2><h2 id="其它-Aware-接口"><a href="#其它-Aware-接口" class="headerlink" title="其它 Aware 接口"></a>其它 <code>Aware</code> 接口</h2><h1 id="8-容器扩展点"><a href="#8-容器扩展点" class="headerlink" title="8. 容器扩展点"></a>8. 容器扩展点</h1><h2 id="8-1-基于-BeanPostProcessor-自定义-Beans"><a href="#8-1-基于-BeanPostProcessor-自定义-Beans" class="headerlink" title="8.1 基于 BeanPostProcessor 自定义 Beans"></a>8.1 基于 BeanPostProcessor 自定义 Beans</h2><h2 id="8-2-基于-BeanFactoryPostProcessor-自定义配置元信息"><a href="#8-2-基于-BeanFactoryPostProcessor-自定义配置元信息" class="headerlink" title="8.2 基于 BeanFactoryPostProcessor 自定义配置元信息"></a>8.2 基于 BeanFactoryPostProcessor 自定义配置元信息</h2><h2 id="8-3-基于-FactoryBean-自定义实例化逻辑"><a href="#8-3-基于-FactoryBean-自定义实例化逻辑" class="headerlink" title="8.3 基于 FactoryBean 自定义实例化逻辑"></a>8.3 基于 FactoryBean 自定义实例化逻辑</h2><h1 id="9-基于注解的容器配置"><a href="#9-基于注解的容器配置" class="headerlink" title="9. 基于注解的容器配置"></a>9. 基于注解的容器配置</h1><p>💡 基于注解的配置引出一个问题——注解配置是否优于 XML 配置？</p>
+<p>总的来说，注解配置更加简洁，而 XML 配置可以不需要修改源代码或者重新编译代码就能连接组件。<br>而 Spring 兼容这两种配置，所以无需担心，但个人更倾向于注解配置，这也已经变成主流的方式。</p>
+<h2 id="Required"><a href="#Required" class="headerlink" title="@Required"></a>@Required</h2><p>@Required 注解和 RequiredAnnotationBeanPostProcessor 在 Spring 5.1 已经被正式标记废弃，支持用构造方法注入所需的配置 (或 InitializingBean.afterPropertiesSet() 的自定义实现，又或自定义 @PostConstruct 方法).</p>
+<h2 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h2><ul>
+<li>构造函数</li>
+</ul>
+<p>💡 Spring 4.3 以后，如果目标 Bean 只有一个构造器，则不需要 @Autowired 注解<br>然而，如果 Bean 拥有多个有效构造器且没有主要&#x2F;默认的构造器，则需要使用 @Autowired 注解来告诉容器使用哪个构造函数</p>
+<ul>
+<li><p>Setter 方法</p>
+</li>
+<li><p>字段</p>
+</li>
+<li><p>任意名称、多个参数的方法B</p>
+</li>
+<li><p>数组&#x2F;集合、字段&#x2F;方法上</p>
+<p>  💡 如果希望数组或列表中的项按特定顺序排序，目标 Bean 可以实现 <code>org.springframework.core.Ordered</code> 接口，或者使用 @Order 或标准 @Priority 注解。否则，它们的顺序遵循容器中相应目标 Bean 定义的注册顺序。</p>
+<p>  @Order 影响注入点的优先级，但请注意，这不会影响到单例 Bean 启动的顺序。（启动顺序只由依赖关系和 @Dependson 决定）</p>
+</li>
+</ul>
+<p>可选依赖</p>
+<ul>
+<li>@Autowired(required &#x3D; false)</li>
+<li>java.util.Optional</li>
+<li>@Nullable（JSR-305）</li>
+</ul>
+<p>💡 @Autowired、@Inject、@Value 和 @Resource 注解是由 Spring BeanPostProcessor 实现处理的。这意味着您不能在自己的 BeanPostProcessor 或 BeanFactoryPostProcessor 类型(如果有的话)中应用这些注释。这些类型必须通过使用 XML 或 Spring @Bean 方法显式地“wired up”起来。</p>
+<h2 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h2><p>通常用于注入外部属性</p>
+<h1 id="12-基于-Java-的容器配置"><a href="#12-基于-Java-的容器配置" class="headerlink" title="12. 基于 Java 的容器配置"></a>12. 基于 Java 的容器配置</h1><p>💡 Spring 2.5 支持 XML 和注解的方式进行依赖注入<br>Spring 3.0 后支持无 XML 的纯注解配置（@Configuration）</p>
+<h2 id="基本概念：-Bean-和-Configuration"><a href="#基本概念：-Bean-和-Configuration" class="headerlink" title="基本概念：@Bean 和 @Configuration"></a>基本概念：<code>@Bean</code> 和 <code>@Configuration</code></h2><p>Spring 新的基于 Java 配置支持的核心是 @Configuration 修饰的类和 @Bean 修饰的方法。</p>
+<p>💡 如果 @Bean 没有在 @Configuration 中声明（而是在比如 @Component 或者其他普通类），会被当做 <code>lite</code> 模式处理。在这种情况下，@Bean 是一种通用工厂方法的机制。</p>
+<p><code>lite</code> 的 @Bean 方法不能声明 Bean 之间的依赖关系，没有任何特殊的运行时语义。因此，这种 @Bean 方法不应该调用其它 @Bean 方法。（补充：如果在 lite 模式下调用，本质上是工厂方法生成新实例，而不是从容器获取依赖）</p>
+<p>应尽量使用全 @Configuration 配置，减少不必要的错误。</p>
+<h2 id="通过-AnnotationConfigApplicationContext-实例化-Spring-容器"><a href="#通过-AnnotationConfigApplicationContext-实例化-Spring-容器" class="headerlink" title="通过 AnnotationConfigApplicationContext 实例化 Spring 容器"></a>通过 <code>AnnotationConfigApplicationContext</code> 实例化 Spring 容器</h2><ul>
+<li><p>简单构造器</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ApplicationContext</span> <span class="hljs-variable">ctx</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);<br><span class="hljs-comment">// 可以是 @Configuration、@Component 以及 JSR-330 注解修饰的类</span><br><span class="hljs-type">ApplicationContext</span> <span class="hljs-variable">ctx</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AnnotationConfigApplicationContext</span>(MyServiceImpl.class, Dependency1.class, Dependency2.class);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><code>register(Class&lt;?&gt;…)</code> 注册方式</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">AnnotationConfigApplicationContext</span> <span class="hljs-variable">ctx</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AnnotationConfigApplicationContext</span>();<br>ctx.register(AppConfig.class, OtherConfig.class);<br>ctx.register(AdditionalConfig.class);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>开启组件扫描 <code>scan(String…)</code></p>
+</li>
+<li><p>AnnotationConfigWebApplication 支持 Web 应用</p>
+</li>
+</ul>
+<h2 id="使用-Bean-注解"><a href="#使用-Bean-注解" class="headerlink" title="使用 @Bean 注解"></a>使用 <code>@Bean</code> 注解</h2><p>这是一个方法级别的注解，对标 XML 配置中的 <bean/></p>
+<p>可以用在 @Configuration 或 @Component 的类中。</p>
+<h3 id="Bean-依赖"><a href="#Bean-依赖" class="headerlink" title="Bean 依赖"></a>Bean 依赖</h3><p>带 @Bean 注解的方法可以</p>
+<p>解析机制与构造器依赖注入很相似。</p>
+<h3 id="接受生命周期回调"><a href="#接受生命周期回调" class="headerlink" title="接受生命周期回调"></a>接受生命周期回调</h3><ul>
+<li>@Bean 注解支持常规的生命周期回调——JSR-250 的 <code>@PostConstruct</code> 和 <code>@PreDestroy</code></li>
+<li>常规的 Spring 生命周期回调——实现 <code>InitializingBean</code> ，<code>DisposableBean</code> 或 <code>Lifecycle</code> ，相关方法会被容器回调</li>
+<li>支持标准的 <code>*Aware</code> 接口集合</li>
+<li>@Bean 注解的 <code>initMethod()</code> 和 <code>destroyMethod()</code></li>
+</ul>
+<h2 id="使用-Configuration-注解"><a href="#使用-Configuration-注解" class="headerlink" title="使用 @Configuration 注解"></a>使用 <code>@Configuration</code> 注解</h2><h3 id="注入-inter-bean-依赖"><a href="#注入-inter-bean-依赖" class="headerlink" title="注入 inter-bean 依赖"></a>注入 inter-bean 依赖</h3><p>💡 @Bean 的依赖关系只在 @Configuration 下生效，在 @Component 下无效</p>
+<h3 id="Lookup-方法注入"><a href="#Lookup-方法注入" class="headerlink" title="Lookup 方法注入"></a>Lookup 方法注入</h3><h2 id="编写基于-Java-的配置"><a href="#编写基于-Java-的配置" class="headerlink" title="编写基于 Java 的配置"></a>编写基于 Java 的配置</h2><p>Spring 的基于 Java 配置，通过注解，简化了复杂的配置</p>
+<h3 id="使用-Import-注解"><a href="#使用-Import-注解" class="headerlink" title="使用 @Import 注解"></a>使用 @Import 注解</h3><p>@Import 允许从其它配置类加载 @Bean 定义</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%88%86%E7%B1%BB/" class="category-chain-item">分类</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Spring/">#Spring</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spring IoC &amp; Beans</div>
+      <div>https://quan7u.github.io/Spring IoC &amp; Beans/</div>
+    </div>
+    <div class="license-meta">
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年8月14日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Spring%20%E6%BA%90%E7%A0%81%E9%80%89%E8%AF%BB/" title="Spring 源码选读">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spring 源码选读</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/note-of-hystrix" title="Hystrix 笔记">
+                        <span class="hidden-mobile">Hystrix 笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'quan7u/quan7u.github.io');
+      s.setAttribute('issue-term', 'url');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
