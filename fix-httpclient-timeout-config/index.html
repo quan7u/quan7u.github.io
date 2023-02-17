@@ -33,9 +33,10 @@
 <meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217110220049.png">
 <meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217111123021.png">
 <meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217111403801.png">
+<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217155716318.png">
 <meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217141958249.png">
 <meta property="article:published_time" content="2023-02-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-17T07:53:07.211Z">
+<meta property="article:modified_time" content="2023-02-17T07:57:28.361Z">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217093020075.png">
@@ -220,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k 字
+          3.1k 字
         
       </span>
     
@@ -231,7 +232,7 @@
         
         
         
-          28 分钟
+          27 分钟
         
       </span>
     
@@ -335,13 +336,7 @@
 <p>指标空白的原因也可以理解，组件线程数满，全是阻塞状态，已经无法上报指标了</p>
 </blockquote>
 <h1 id="问题梳理"><a href="#问题梳理" class="headerlink" title="问题梳理"></a>问题梳理</h1><p>整条请求链路如下</p>
-<pre><code class=" mermaid">flowchart LR
-c[客户端小程序]--&gt;|客户端控制超时|ft[飞天服务端]
-ft--&gt;|5s 超时|n[Nginx]--&gt;|nginx控制超时|g[gateway]
-g--&gt;|gateway控制超时|e[ext-server]--&gt;|HttpClient 控制超时|gl[国麟]
-
-</code></pre>
-
+<p><img src="/fix-httpclient-timeout-config/image-20230217155716318.png" srcset="/img/loading.gif" lazyload alt="image-20230217155716318"></p>
 <p>在 ext-server 配置了 HttpClient 的超时</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">RequestConfig</span> <span class="hljs-variable">requestConfig</span> <span class="hljs-operator">=</span> RequestConfig.custom()<br>    <span class="hljs-comment">//服务器返回数据(response)的时间，超过该时间抛出read timeout 20s</span><br>    .setSocketTimeout(<span class="hljs-number">20000</span>)<br>    <span class="hljs-comment">//连接上服务器(握手成功)的时间，超出该时间抛出connect timeout 10s</span><br>    .setConnectTimeout(<span class="hljs-number">10000</span>)<br>    <span class="hljs-comment">//从连接池中获取连接的超时时间，超过该时间未拿到可用连接，10s</span><br>    <span class="hljs-comment">//会抛出org.apache.http.conn.ConnectionPoolTimeoutException: Timeout waiting for connection from pool</span><br>    .setConnectionRequestTimeout(<span class="hljs-number">10000</span>)<br>    <span class="hljs-comment">// 是否自动重定向</span><br>    .setRedirectsEnabled(autoRedirect)<br>    .build();<br></code></pre></td></tr></table></figure>
 
