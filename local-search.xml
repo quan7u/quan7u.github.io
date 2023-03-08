@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>调用外部接口慢的问题排查</title>
+    <link href="/slow-connect-troubleshooting/"/>
+    <url>/slow-connect-troubleshooting/</url>
+    
+    <content type="html"><![CDATA[<h3 id="Postman"><a href="#Postman" class="headerlink" title="Postman"></a>Postman</h3><p>接口对接完毕后使用Postman调测，平均响应时间在8秒左右</p><p><img src="/slow-connect-troubleshooting/image-20230308110630229.png" alt="image-20230308110630229"></p><h3 id="debug日志"><a href="#debug日志" class="headerlink" title="debug日志"></a>debug日志</h3><p>看各个组件info日志都没有报错，再关注与外部直接调用组件的debug日志</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-number">11</span>:<span class="hljs-number">11</span>:<span class="hljs-number">54</span>[DEBUG]ec-<span class="hljs-number">1</span> o.a.h.i.e.MainClientExec       5f44114a9d9f4c528d50196c627e2708   Opening connection &#123;s&#125;-&gt;https:<span class="hljs-comment">//xxx:443</span><br><span class="hljs-number">11</span>:<span class="hljs-number">12</span>:<span class="hljs-number">02</span>[DEBUG]ec-<span class="hljs-number">1</span> ltHttpClientConnectionOperator 5f44114a9d9f4c528d50196c627e2708   Connecting to xxx:<span class="hljs-number">443</span><br></code></pre></td></tr></table></figure><p>HttpClient的日志显示建立连接耗时就高达8秒</p><h3 id="traceroute"><a href="#traceroute" class="headerlink" title="traceroute"></a>traceroute</h3><p>使用traceroute查看各个路由之间的耗时（这里发现了问题</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">traceroute --tcp -p 443 -n domain.name<br></code></pre></td></tr></table></figure><p>traceroute第一行会输出域名的目的ip，在a主机上执行这条命令光标闪了8下（8秒）才输出第一行</p><p>换到b主机再执行这条命令，立即显示了第一行（b主机和a主机的dns配置有区别</p><p>再回到a主机，直接对ip进行测试</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">traceroute --tcp -p 443 ip<br></code></pre></td></tr></table></figure><p>第一行也立刻输出了，此时判断是dns的问题，a主机配置了内部系统的dns</p><h3 id="nslookup"><a href="#nslookup" class="headerlink" title="nslookup"></a>nslookup</h3><p>排查dns解析耗时</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">time nslookup account.bol.wo.cn<br></code></pre></td></tr></table></figure><p><img src="/slow-connect-troubleshooting/image-20230308114308691.png" alt="image-20230308114308691"></p><p>至此，证实dns的问题</p><h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>但由于文件存储相关的需求，内部dns不能调整修改</p><p>和运维同事商量后，将外部调用的组件与文件处理的组件分开部署，从主机dns配置隔离的角度优先解决了这个问题</p><p>如果对方ip固定，则只需要修改host达到目的（但是不确定是否固定</p><p>&#x2F;&#x2F; todo 可能还有其它解决方法，再学习</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>分类</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>web</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>HttpClient超时配置未生效分析与修复</title>
     <link href="/fix-httpclient-timeout-config/"/>
     <url>/fix-httpclient-timeout-config/</url>

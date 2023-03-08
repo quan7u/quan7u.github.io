@@ -18,34 +18,24 @@
   
     <meta name="description" content="RestTemplate 配置有误造成客户端超时配置未生效">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HttpClient超时配置未生效分析与修复">
-<meta property="og:url" content="https://quan7u.github.io/fix-httpclient-timeout-config/index.html">
+<meta property="og:title" content="调用外部接口慢的问题排查">
+<meta property="og:url" content="https://quan7u.github.io/slow-connect-troubleshooting/index.html">
 <meta property="og:site_name" content="quan7u">
 <meta property="og:description" content="RestTemplate 配置有误造成客户端超时配置未生效">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217093020075.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217093942759.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217094737433.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217095121282.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217095637707.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217101046229.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217101554500.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217110220049.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217111123021.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217111403801.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217155716318.png">
-<meta property="og:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217141958249.png">
-<meta property="article:published_time" content="2023-02-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-17T08:11:06.113Z">
+<meta property="og:image" content="https://quan7u.github.io/slow-connect-troubleshooting/image-20230308110630229.png">
+<meta property="og:image" content="https://quan7u.github.io/slow-connect-troubleshooting/image-20230308114308691.png">
+<meta property="article:published_time" content="2023-03-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-08T03:46:04.952Z">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://quan7u.github.io/fix-httpclient-timeout-config/image-20230217093020075.png">
+<meta name="twitter:image" content="https://quan7u.github.io/slow-connect-troubleshooting/image-20230308110630229.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>HttpClient超时配置未生效分析与修复 - quan7u</title>
+  <title>调用外部接口慢的问题排查 - quan7u</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +188,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="HttpClient超时配置未生效分析与修复"></span>
+            <span id="subtitle" data-typed-text="调用外部接口慢的问题排查"></span>
           
         </div>
 
@@ -209,8 +199,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-17 00:00" pubdate>
-          2023年2月17日 凌晨
+        <time datetime="2023-03-08 00:00" pubdate>
+          2023年3月8日 凌晨
         </time>
       </span>
     
@@ -221,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.4k 字
+          772 字
         
       </span>
     
@@ -232,7 +222,7 @@
         
         
         
-          28 分钟
+          7 分钟
         
       </span>
     
@@ -278,83 +268,35 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">HttpClient超时配置未生效分析与修复</h1>
+            <h1 style="display: none">调用外部接口慢的问题排查</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="监控分析"><a href="#监控分析" class="headerlink" title="监控分析"></a>监控分析</h1><p>异常时间：22:30:00 —— 23:00:00</p>
-<p>55 分下游报告接口不可用，23 点自动恢复正常。</p>
-<h2 id="Nginx-情况"><a href="#Nginx-情况" class="headerlink" title="Nginx 情况"></a>Nginx 情况</h2><p>连接数异常</p>
-<p>64主，65备，此次没有影响备</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217093020075.png" srcset="/img/loading.gif" lazyload alt="image-20230217093020075"></p>
-<p>47 分左右连接数飙升，到56、57分左右连接数断开恢复正常</p>
-<h2 id="Linux-主机情况"><a href="#Linux-主机情况" class="headerlink" title="Linux 主机情况"></a>Linux 主机情况</h2><p>gateway 部署在 73、74</p>
-<p>ext-server 部署在 74-77</p>
-<p>74 为重叠部分，关注是否压力更高</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217093942759.png" srcset="/img/loading.gif" lazyload alt="image-20230217093942759"></p>
-<p>关注几个指标：</p>
-<ul>
-<li>TCP_alloc：已分配的TCP套接字数量</li>
-<li>CurrEstab：当前状态为 ESTABLISHED 或 CLOSE-WAIT 的 TCP 连接数</li>
-<li>Sockets_used：已使用的所有协议套接字总量</li>
-<li>Tcp_OutSegs：发出的报文段的总数（包括当前连接的段，但不包括重传的段)</li>
-<li>Tcp_InSegs：收到的报文段的总数（包括错误接收的报文段）</li>
-</ul>
-<p>指标含义：<a target="_blank" rel="noopener" href="https://help.aliyun.com/apsara/agile/v_3_6_0_20210705/apsarabase/aso-operation-guide-v2/cluster-monitoring.html">https://help.aliyun.com/apsara/agile/v_3_6_0_20210705/apsarabase/aso-operation-guide-v2/cluster-monitoring.html</a></p>
-<p>74 比只部署的 gateway 的主机少了近 4k 的连接数，符合猜想（如果服务主机资源充足，还是应该独立部署）</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217094737433.png" srcset="/img/loading.gif" lazyload alt="image-20230217094737433"></p>
-<p>异常期间，主机流量监控指标直接空了一段</p>
-<h2 id="组件情况"><a href="#组件情况" class="headerlink" title="组件情况"></a>组件情况</h2><p><img src="/fix-httpclient-timeout-config/image-20230217095121282.png" srcset="/img/loading.gif" lazyload alt="image-20230217095121282"></p>
-<p>Web 容器连接数打满，监控指标在异常期间也断了一大截</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217095637707.png" srcset="/img/loading.gif" lazyload alt="image-20230217095637707"></p>
-<p>JVM 监控，waiting 状态的线程数飙升，打满后服务应该处于不可用的阻塞状态</p>
-<blockquote>
-<p>这里想要看当时是什么线程阻塞，jstack 无法回溯了，只能看看日志。后续是否有手段可以将故障时期的堆栈给 dump 下来</p>
-<p>其实已经猜到是上游服务宕机了，但是发起 HTTP 的客户端配置了超时时间 20s，请求量没有那么大，不应该造成这种阻塞</p>
-</blockquote>
-<h2 id="日志情况"><a href="#日志情况" class="headerlink" title="日志情况"></a>日志情况</h2><p>gateway 日志</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217101046229.png" srcset="/img/loading.gif" lazyload alt="image-20230217101046229"></p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217101554500.png" srcset="/img/loading.gif" lazyload alt="image-20230217101554500"></p>
-<p>从 51 分开始，陆陆续续抛出 org.apache.catalina.connector.ClientAbortException 异常，也就是经由 gateway 路由的请求也发生了超时</p>
-<p>（这个超时时间由 gateway 侧的客户端控制，目前没有做配置，走的默认配置</p>
-<blockquote>
-<p>后续可优化：Spring Gateway 全局超时时间配置、指定路由超时时间配置</p>
-</blockquote>
-<p><img src="/fix-httpclient-timeout-config/image-20230217110220049.png" srcset="/img/loading.gif" lazyload></p>
-<p>57 分输出大量的 IOException，but ServerHttpResponse already committed (200 OK)</p>
-<p>这个异常应该是上游接口在几分钟阻塞后返回，响应从上游到 ext-server，再返回到 gateway，但是 Nginx 客户端连接已经断开（可以看上面的 Nginx 情况截图，这个时候连接数骤减，应该是触发了 Nginx 的超时配置）</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217111123021.png" srcset="/img/loading.gif" lazyload alt="image-20230217111123021"></p>
-<p>随机抓了一条超时请求的日志，耗时高达 311108ms，近 5 分钟</p>
-<h2 id="接口情况"><a href="#接口情况" class="headerlink" title="接口情况"></a>接口情况</h2><p><img src="/fix-httpclient-timeout-config/image-20230217111403801.png" srcset="/img/loading.gif" lazyload alt="image-20230217111403801"></p>
-<p>从 43 分开始，接口耗时已经开始上升到分钟级别，48分钟时，监控指标空白</p>
-<blockquote>
-<p>指标空白的原因也可以理解，组件线程数满，全是阻塞状态，已经无法上报指标了</p>
-</blockquote>
-<h1 id="问题梳理"><a href="#问题梳理" class="headerlink" title="问题梳理"></a>问题梳理</h1><p>整条请求链路如下</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217155716318.png" srcset="/img/loading.gif" lazyload alt="image-20230217155716318"></p>
-<p>在 ext-server 配置了 HttpClient 的超时</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">RequestConfig</span> <span class="hljs-variable">requestConfig</span> <span class="hljs-operator">=</span> RequestConfig.custom()<br>    <span class="hljs-comment">//服务器返回数据(response)的时间，超过该时间抛出read timeout 20s</span><br>    .setSocketTimeout(<span class="hljs-number">20000</span>)<br>    <span class="hljs-comment">//连接上服务器(握手成功)的时间，超出该时间抛出connect timeout 10s</span><br>    .setConnectTimeout(<span class="hljs-number">10000</span>)<br>    <span class="hljs-comment">//从连接池中获取连接的超时时间，超过该时间未拿到可用连接，10s</span><br>    <span class="hljs-comment">//会抛出org.apache.http.conn.ConnectionPoolTimeoutException: Timeout waiting for connection from pool</span><br>    .setConnectionRequestTimeout(<span class="hljs-number">10000</span>)<br>    <span class="hljs-comment">// 是否自动重定向</span><br>    .setRedirectsEnabled(autoRedirect)<br>    .build();<br></code></pre></td></tr></table></figure>
+                <h3 id="Postman"><a href="#Postman" class="headerlink" title="Postman"></a>Postman</h3><p>接口对接完毕后使用Postman调测，平均响应时间在8秒左右</p>
+<p><img src="/slow-connect-troubleshooting/image-20230308110630229.png" srcset="/img/loading.gif" lazyload alt="image-20230308110630229"></p>
+<h3 id="debug日志"><a href="#debug日志" class="headerlink" title="debug日志"></a>debug日志</h3><p>看各个组件info日志都没有报错，再关注与外部直接调用组件的debug日志</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-number">11</span>:<span class="hljs-number">11</span>:<span class="hljs-number">54</span>[DEBUG]ec-<span class="hljs-number">1</span> o.a.h.i.e.MainClientExec       5f44114a9d9f4c528d50196c627e2708   Opening connection &#123;s&#125;-&gt;https:<span class="hljs-comment">//xxx:443</span><br><span class="hljs-number">11</span>:<span class="hljs-number">12</span>:<span class="hljs-number">02</span>[DEBUG]ec-<span class="hljs-number">1</span> ltHttpClientConnectionOperator 5f44114a9d9f4c528d50196c627e2708   Connecting to xxx:<span class="hljs-number">443</span><br></code></pre></td></tr></table></figure>
 
-<p>本地&#x2F;测试环境验证该配置是否生效……</p>
-<p>经验证，该客户端配置没有成功（被替换..</p>
-<p><img src="/fix-httpclient-timeout-config/image-20230217141958249.png" srcset="/img/loading.gif" lazyload alt="image-20230217141958249"></p>
-<p>检查 RestTemplate 配置类，发现 org.springframework.boot.web.client.RestTemplateBuilder#configure 会将重新配置工厂实例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * Configure the provided &#123;<span class="hljs-doctag">@link</span> RestTemplate&#125; instance using this builder.</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> &lt;T&gt; the type of rest template</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> restTemplate the &#123;<span class="hljs-doctag">@link</span> RestTemplate&#125; to configure</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span> the rest template instance</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@see</span> RestTemplateBuilder#build()</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@see</span> RestTemplateBuilder#build(Class)</span><br><span class="hljs-comment">	 */</span><br><span class="hljs-keyword">public</span> &lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RestTemplate</span>&gt; T <span class="hljs-title function_">configure</span><span class="hljs-params">(T restTemplate)</span> &#123;<br>    <span class="hljs-comment">// 配置 requestFactory</span><br>    <span class="hljs-type">ClientHttpRequestFactory</span> <span class="hljs-variable">requestFactory</span> <span class="hljs-operator">=</span> buildRequestFactory();<br>    <span class="hljs-keyword">if</span> (requestFactory != <span class="hljs-literal">null</span>) &#123;<br>        restTemplate.setRequestFactory(requestFactory);<br>    &#125;<br>    ......<br>    <span class="hljs-keyword">return</span> restTemplate;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>HttpClient的日志显示建立连接耗时就高达8秒</p>
+<h3 id="traceroute"><a href="#traceroute" class="headerlink" title="traceroute"></a>traceroute</h3><p>使用traceroute查看各个路由之间的耗时（这里发现了问题</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">traceroute --tcp -p 443 -n domain.name<br></code></pre></td></tr></table></figure>
 
-<p>当初为了用上 MetricsClientHttpRequestInterceptor（Spring 官方实现对 RestTemplate 的指标监控 http.client.requests），才用了这个 Buider 的 configure 方法，看入参是个 RestTemplate 实例，理所当然认为在传入的已自定义好的实例增加指标拦截器。</p>
-<p><strong>至此，找到问题根源。</strong></p>
-<p>修复也很简单，只要指定工厂配置即可</p>
-<p>org.springframework.boot.web.client.RestTemplateBuilder#requestFactory(java.util.function.Supplier&lt;org.springframework.http.client.ClientHttpRequestFactory&gt;)</p>
-<p>经测试，超时配置已生效，一旦上游响应时间超出超时配置，客户端即断开连接，抛出  java.net.SocketTimeoutException 异常</p>
-<p><strong>15:08:10[WARN ]6-31 o.e.j.s.HttpChannel              handleException &#x2F;rest&#x2F;test java.net.SocketTimeoutException: Read timed out</strong></p>
-<p>本地的验证 demo 程序默认情况下返回给客户端（浏览器）的内容如下</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Whitelabel Error Page<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This application has no explicit mapping for /error, so you are seeing this as a fallback.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&#x27;created&#x27;</span>&gt;</span>Fri Feb 17 15:08:10 CST 2023<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>There was an unexpected error (type=Internal Server Error, status=500).<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>traceroute第一行会输出域名的目的ip，在a主机上执行这条命令光标闪了8下（8秒）才输出第一行</p>
+<p>换到b主机再执行这条命令，立即显示了第一行（b主机和a主机的dns配置有区别</p>
+<p>再回到a主机，直接对ip进行测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">traceroute --tcp -p 443 ip<br></code></pre></td></tr></table></figure>
 
+<p>第一行也立刻输出了，此时判断是dns的问题，a主机配置了内部系统的dns</p>
+<h3 id="nslookup"><a href="#nslookup" class="headerlink" title="nslookup"></a>nslookup</h3><p>排查dns解析耗时</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">time nslookup account.bol.wo.cn<br></code></pre></td></tr></table></figure>
 
-
-<p>当组件为服务提供者时，需要保证更通用友好的响应格式返回（在 Feign 调用超时或者错误，通常会通过 fallback 熔断进行实现</p>
-<p><strong>但这里不是上游错误，而是超时。</strong>自身抛出异常中断请求，所以这种情况使用 Spring 的 ExceptionHandler 统一处理即可。</p>
+<p><img src="/slow-connect-troubleshooting/image-20230308114308691.png" srcset="/img/loading.gif" lazyload alt="image-20230308114308691"></p>
+<p>至此，证实dns的问题</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>但由于文件存储相关的需求，内部dns不能调整修改</p>
+<p>和运维同事商量后，将外部调用的组件与文件处理的组件分开部署，从主机dns配置隔离的角度优先解决了这个问题</p>
+<p>如果对方ip固定，则只需要修改host达到目的（但是不确定是否固定</p>
+<p>&#x2F;&#x2F; todo 可能还有其它解决方法，再学习</p>
 
                 
               </div>
@@ -402,18 +344,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/slow-connect-troubleshooting/" title="调用外部接口慢的问题排查">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">调用外部接口慢的问题排查</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/design-of-my-blog/" title="我的博客的设计思路">
-                        <span class="hidden-mobile">我的博客的设计思路</span>
+                      <a href="/fix-httpclient-timeout-config/" title="HttpClient超时配置未生效分析与修复">
+                        <span class="hidden-mobile">HttpClient超时配置未生效分析与修复</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
